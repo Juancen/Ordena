@@ -4,6 +4,7 @@ from app.modules.gastronomia.exceptions.pedidos_errors import (
 DatabaseError,
 ValidationError
 )
+from decimal import Decimal
 
 def obtener_productos_por_ids(ids_productos):
     
@@ -72,7 +73,7 @@ def existe_producto_con_mismo_nombre(id_negocio: int, nombre: str) -> bool:
 
     return resultado is not None
 
-def crear_producto_repository(id_negocio: int, nombre: str, precio: float, estado: str = "activo"):
+def crear_producto_repository(id_negocio: int, nombre: str, precio: Decimal, estado: str = "activo"):
     conn = None
     cursor = None
 
