@@ -1,12 +1,20 @@
 from fastapi import APIRouter, HTTPException
+from datetime import datetime
 from app.modules.gastronomia.schemas.pedido_schema import PedidoCreate
-from app.modules.gastronomia.schemas.pedido_schema import (PedidoResponse,ActualizarEstadoPedido,PedidoEstadoResponse)
+from app.modules.gastronomia.schemas.pedido_schema import (
+    PedidoResponse,
+    ActualizarEstadoPedido,
+    PedidoEstadoResponse,
+    PedidoListItem,
+    PedidoDetalleResponse,
+    PaginacionResponse
+    )
 from app.modules.gastronomia.services.pedidos_service import (
     consultar_pedido_por_codigo_publico,
     crear_pedido,
     actualizar_estado_pedido,
     listar_pedidos,
-    obtener_pedido_detalle
+    obtener_pedido_detalle,
     )
 from app.modules.gastronomia.exceptions.pedidos_errors import (
     ValidationError,
@@ -32,7 +40,6 @@ def crear_pedido_endpoint(pedido: PedidoCreate):
             origen=pedido.origen,
             items_pedido=[item.model_dump() for item in pedido.items_pedido]
         )
-
         return resultado
 
     except ValidationError as e:
@@ -53,7 +60,8 @@ def crear_pedido_endpoint(pedido: PedidoCreate):
     except DatabaseError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    except Exception:
+    except Exception as e:
+        print("ERROR REAL:", e)
         raise HTTPException(status_code=500, detail="Error interno del servidor")
     
     
@@ -92,29 +100,10 @@ def actualizar_estado(id_pedido: int, data: ActualizarEstadoPedido):
 
     except Exception:
         raise HTTPException(status_code=500, detail="Error interno del servidor")
-    
 
-@router.get("/negocios/{id_negocio}/pedidos")
-def listar_pedidos_route(id_negocio: int, estado: str | None = None):
-    try:
-        pedidos = listar_pedidos(id_negocio, estado)
-        return pedidos
 
-    except ValidationError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-    except NegocioNoEncontradoError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-
-    except DatabaseError as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
-
-@router.get("/pedidos/{id_pedido}")
+@router.get("/pedidos/{id_pedido}", response_model= PedidoDetalleResponse)
 def detalle_pedido(id_pedido: int):
-    
     try:
         pedido = obtener_pedido_detalle(id_pedido)
         return pedido
@@ -130,3 +119,39 @@ def detalle_pedido(id_pedido: int):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
+    
+#recibir id_negocio (path)
+"""recibir query params:
+    estado (opcional)
+    fecha_desde (opcional)
+    fecha_hasta (opcional)
+    limit (default 10)
+    offset (default 0)"""
+    
+@router.get("/negocios/{id_negocio}/pedidos", response_model= PaginacionResponse)
+def listar_pedidos_x_negocio(
+    id_negocio: int,
+    limit: int = 10,
+    offset: int = 0,
+    estado: str | None = None,
+    fecha_desde: datetime | None = None,
+    fecha_hasta: datetime | None = None
+    ):
+    
+    try:
+        pedidos = listar_pedidos(id_negocio,estado,fecha_desde,fecha_hasta,limit,offset)
+        
+        return pedidos
+    
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    except NegocioNoEncontradoError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+    except DatabaseError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
+    
