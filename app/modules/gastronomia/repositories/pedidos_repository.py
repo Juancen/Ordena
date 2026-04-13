@@ -7,71 +7,6 @@ ValidationError
 from typing import cast
 
 
-def obtener_productos_por_ids(ids_productos):
-    
-    if not ids_productos:
-        return []
-    
-    cursor = None
-    conn = None
-    
-    try:
-            conn = get_connection()
-            if conn is None:
-                raise Exception("Error de conexión")   
-            cursor = conn.cursor(dictionary=True)
-            placeholders = ", ".join(["%s"] * len(ids_productos))
-            query = f"""SELECT id, id_negocio, nombre, precio, estado 
-                        FROM productos 
-                        WHERE id IN ({placeholders})
-                        AND estado = 'activo' """
-            
-            cursor.execute(query, ids_productos)
-            return cursor.fetchall()
-        
-    except Error:
-        raise 
-    
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
-
-def obtener_negocio_por_id(id_negocio):
-    if not id_negocio:
-        raise ValueError("id_negocio es obligatorio")
-    
-    cursor = None
-    conn = None
-    
-    try:
-        conn = get_connection()
-        if conn is None:
-            raise Exception("Error de conexión")   
-        cursor = conn.cursor(dictionary=True)
-        
-        query = """
-                    SELECT *
-                    FROM negocios
-                    WHERE id = %s
-                    AND estado = 'activo' 
-                
-                """
-        
-        cursor.execute(query, (id_negocio, ))
-        negocio = cursor.fetchone()
-        return negocio
-    
-    except Error as e:
-        raise DatabaseError(f"Error al obtener negocio: {str(e)}")
-    
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
-
 def obtener_pedido_por_codigo_publico(codigo_publico):
     cursor = None
     conn = None
@@ -198,7 +133,8 @@ def obtener_pedido_por_id(id_pedido) -> dict | None:
                    tipo_entrega,
                    origen,
                    estado,
-                   precio_total
+                   precio_total,
+                   fecha_creacion
             FROM pedidos
             WHERE id = %s
         """
@@ -218,7 +154,7 @@ def obtener_pedido_por_id(id_pedido) -> dict | None:
         if conn:
             conn.close()
 
-def repository_actualizar_estado_pedido(id_pedido, nuevo_estado):
+def repository_actualizar_estado_pedido(id_pedido, nuevo_estado, fecha_inicio=None, fecha_fin=None):
     cursor = None
     conn = None
     
@@ -248,8 +184,7 @@ def repository_actualizar_estado_pedido(id_pedido, nuevo_estado):
         if conn:
             conn.close()
 
-def obtener_pedidos(id_negocio: int, estado: str | None = None):
-    
+def obtener_pedidos(id_negocio, estado=None, fecha_inicio=None, fecha_fin=None, limit=10, offset=0): 
     conn = None
     cursor = None
     
@@ -260,7 +195,13 @@ def obtener_pedidos(id_negocio: int, estado: str | None = None):
         cursor = conn.cursor(dictionary=True)
         
         query = """
-                SELECT codigo_publico, nombre_cliente, tipo_entrega, estado, fecha_creacion, precio_total
+                SELECT 
+                codigo_publico,
+                nombre_cliente,
+                tipo_entrega,
+                estado,
+                fecha_creacion,
+                precio_total
                 FROM pedidos
                 WHERE id_negocio = %s
                 """
@@ -269,8 +210,25 @@ def obtener_pedidos(id_negocio: int, estado: str | None = None):
         if estado is not None:
             query += " AND estado = %s"
             params.append(estado)
+        
+        if fecha_inicio is not None and fecha_fin is not None:
+            query += " AND fecha_creacion BETWEEN %s AND %s "
+            params.extend([fecha_inicio, fecha_fin])
+        
+        elif fecha_inicio:
+            query += " AND fecha_creacion >= %s"
+            params.append(fecha_inicio)
+
+        elif fecha_fin:
+            query += " AND fecha_creacion <= %s"
+            params.append(fecha_fin)
             
-        query += " ORDER BY fecha_creacion DESC"
+            
+        query += """ ORDER BY fecha_creacion DESC
+                    LIMIT %s
+                    OFFSET %s """
+        params.extend([limit, offset])
+                    
         cursor.execute(query, params)
         lista_de_pedidos = cursor.fetchall()
         return lista_de_pedidos
@@ -317,3 +275,47 @@ def obtener_items_por_pedido(id_pedido):
                 cursor.close()
             if conn:
                 conn.close()
+    
+def contar_pedidos(id_negocio, estado=None, fecha_inicio=None, fecha_fin=None):
+        conn = None
+        cursor = None
+        
+        try:
+            conn = get_connection()
+            if conn is None:
+                raise Exception("Error de conexión")   
+            cursor = conn.cursor(dictionary=True)
+            
+            query = """
+                SELECT COUNT(*) AS total
+                FROM pedidos
+                WHERE id_negocio = %s
+                """
+                
+            params: list = [id_negocio]
+
+            if estado is not None:
+                query += " AND estado = %s"
+                params.append(estado)
+        
+            if fecha_inicio is not None and fecha_fin is not None:
+                query += " AND fecha_creacion BETWEEN %s AND %s "
+                params.extend([fecha_inicio, fecha_fin])
+                
+                
+            cursor.execute(query, params)
+            respuesta = cast(dict, cursor.fetchone())
+            total = respuesta["total"]
+            
+            return total
+            
+                
+        except Error as e:
+            raise DatabaseError(f"Error al obtener los pedidos: {str(e)}")
+    
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+

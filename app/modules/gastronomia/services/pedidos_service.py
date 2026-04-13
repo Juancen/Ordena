@@ -6,20 +6,23 @@ from app.modules.gastronomia.exceptions.pedidos_errors import (
     NegocioNoEncontradoError,
     PedidoNoEncontradoError,
 )
+from app.modules.gastronomia.repositories.negocio_repository import obtener_negocio_por_id
+from app.modules.gastronomia.repositories.producto_repository import obtener_productos_por_ids
 from app.modules.gastronomia.repositories.pedidos_repository import (
-    obtener_productos_por_ids,
-    obtener_negocio_por_id,
     obtener_pedido_por_codigo_publico,
     crear_pedido_con_items,
     obtener_pedido_por_id,
     repository_actualizar_estado_pedido,
     obtener_pedidos,
-    obtener_items_por_pedido
+    obtener_items_por_pedido,
+    contar_pedidos
     )
 import random
 import string
 ESTADOS_PEDIDO_VALIDOS = ["pendiente", "en_preparacion", "listo", "entregado", "cancelado"]
-
+MAX_LIMIT = 50
+from datetime import timedelta
+from datetime import datetime
 def generar_codigo_publico(longitud=4):
     letras_upper = string.ascii_uppercase 
     numeros = string.digits
@@ -34,7 +37,16 @@ def crear_codigo_publico_unico():
 
         if not existente:
             return codigo
+def validar_items_duplicados(items):
+    ids_vistos = set()
 
+    for item in items:
+        id_producto = item["id_producto"]
+
+        if id_producto in ids_vistos:
+            raise ValidationError(f"Producto duplicado: {id_producto}")
+
+        ids_vistos.add(id_producto)
 def validar_items_pedido(items_pedido):
     
     if not items_pedido or not isinstance(items_pedido, list):
@@ -58,14 +70,12 @@ def validar_items_pedido(items_pedido):
         if not isinstance(cantidad, int) or cantidad <= 0:
             raise ValidationError(f"cantidad inválida en posición {index}")
         
-        
-
 def crear_pedido(id_negocio,nombre_cliente,contacto_cliente,direccion_cliente,tipo_entrega,origen,items_pedido):
     
     TIPO_ENTREGAS = ["delivery", "retiro_local"]
     TIPO_ORIGEN = ["interno","online"]
     
-    nombre_cliente = nombre_cliente.strip() if nombre_cliente else nombre_cliente
+    nombre_cliente = nombre_cliente.strip().lower() if nombre_cliente else nombre_cliente
     contacto_cliente = contacto_cliente.strip() if contacto_cliente else contacto_cliente
     direccion_cliente = direccion_cliente.strip() if direccion_cliente else direccion_cliente
     
@@ -90,6 +100,7 @@ def crear_pedido(id_negocio,nombre_cliente,contacto_cliente,direccion_cliente,ti
         raise NegocioNoEncontradoError(f"Negocio {id_negocio} no existe")
     
     validar_items_pedido(items_pedido)
+    validar_items_duplicados(items_pedido)
     
     ids_productos = [item["id_producto"] for item in items_pedido]
     productos_db = obtener_productos_por_ids(ids_productos)
@@ -216,22 +227,60 @@ def validar_transicion_estado(estado_actual, nuevo_estado):
     
     return True
 
-def listar_pedidos(id_negocio, estado=None):
 
-    if id_negocio is None:
-        raise ValidationError("id_negocio invalido")
-
+def listar_pedidos(
+    id_negocio: int, 
+    estado: str | None = None, 
+    fecha_desde: datetime | None = None,
+    fecha_hasta: datetime | None = None,
+    limit: int = 10,
+    offset: int = 0
+    ):
+    
+    
+    
     negocio = obtener_negocio_por_id(id_negocio)
     if not negocio:
         raise NegocioNoEncontradoError("Negocio no encontrado")
 
     if estado is not None and estado not in ESTADOS_PEDIDO_VALIDOS:
         raise ValidationError(f"estado invalido: {estado}")
-
-    pedidos = obtener_pedidos(id_negocio, estado)
-    return pedidos
+      #validar limit:
+    if limit <= 0:
+            raise ValidationError("Numero de limite invalido")
+    if limit > MAX_LIMIT:
+            raise ValidationError("Su supero el limite maximo")
+        #validar offset:
+    if offset < 0: 
+            raise ValidationError("offset invalido")
+    
+    if fecha_desde and fecha_hasta:
+        #validar fechas:
+        if fecha_desde > fecha_hasta:
+            raise ValidationError("fechas invalidas")
+        
+    pedidos = obtener_pedidos(id_negocio, estado,fecha_desde,fecha_hasta,limit,offset)
+    total = contar_pedidos(id_negocio,estado,fecha_desde,fecha_hasta)
+    has_next = offset + limit < total
+    total_pages = (total + limit - 1) // limit
+    
+    if total_pages == 0:
+        total_pages = 0
+        
+    
+    respuesta = {
+        "total": total,
+        "limit": limit,
+        "offset": offset,
+        "has_next": has_next,
+        "total_pages":total_pages,
+        "items": pedidos
+    }
+    
+    return respuesta
 
 def obtener_pedido_detalle(id_pedido):
+    
     
     if id_pedido is None:
         raise ValidationError("El id del pedido es obligatorio")
@@ -242,3 +291,4 @@ def obtener_pedido_detalle(id_pedido):
     items = obtener_items_por_pedido(id_pedido)
     pedido["items"] = items
     return pedido
+
