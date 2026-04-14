@@ -41,10 +41,6 @@ def existe_producto_con_mismo_nombre(id_negocio: int, nombre: str) -> bool:
     
     cursor = None
     conn = None
-    
-    
-    
-    
     try:
         conn = get_connection()
         if conn is None:
@@ -108,6 +104,36 @@ def crear_producto_repository(id_negocio: int, nombre: str, precio: Decimal, est
             conn.rollback()
         raise DatabaseError(f"Error al crear el producto: {str(e)}")
 
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+def listar_productos_por_negocio(id_negocio):
+    conn = None
+    cursor = None
+    
+    try:
+        conn = get_connection()
+        if conn is None:
+            raise Exception("Error de conexión")
+
+        cursor = conn.cursor(dictionary=True)
+        query_select = """
+            SELECT id, id_negocio, nombre, precio, estado
+            FROM productos
+            WHERE id_negocio = %s
+            AND estado = 'activo'
+            """
+        cursor.execute(query_select, (id_negocio,))
+        lista_productos = cursor.fetchall()
+        
+        return lista_productos
+    
+    except Error as e:
+        raise DatabaseError(f"Error al obtener los productos: {str(e)}")
+    
     finally:
         if cursor:
             cursor.close()
