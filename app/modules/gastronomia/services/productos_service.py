@@ -1,7 +1,8 @@
 from app.modules.gastronomia.repositories.negocio_repository import obtener_negocio_por_id
 from app.modules.gastronomia.repositories.producto_repository import (
     existe_producto_con_mismo_nombre,
-    crear_producto_repository
+    crear_producto_repository,
+    listar_productos_por_negocio
     )
 from app.modules.gastronomia.exceptions.pedidos_errors import (ValidationError,NegocioNoEncontradoError)
 from typing import cast
@@ -34,7 +35,7 @@ def crear_producto(id_negocio: int, nombre: str, precio: float):
         precio_decimal = Decimal(str(precio))
     except (InvalidOperation, ValueError):
         raise ValidationError("El precio no es válido")
-    
+
     if precio_decimal <= 0:
         raise ValidationError("El precio debe ser mayor a 0")
 
@@ -49,3 +50,19 @@ def crear_producto(id_negocio: int, nombre: str, precio: float):
     )
 
     return producto_creado
+
+def listar_productos(id_negocio):
+
+  negocio = obtener_negocio_por_id(id_negocio)
+
+  if negocio is None:
+      raise NegocioNoEncontradoError("Negocio no encontrado")
+  
+  negocio = cast(dict, negocio)
+  
+  if negocio["estado"] != "activo":
+      raise ValidationError("El negocio no está activo")
+
+  productos = listar_productos_por_negocio(id_negocio)
+
+  return productos
