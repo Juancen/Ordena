@@ -5,6 +5,46 @@ DatabaseError,
 ValidationError
 )
 from decimal import Decimal
+from typing import cast
+from typing import Optional, Dict
+
+
+def obtener_producto_por_id(id_producto)-> dict | None:
+    
+    if id_producto is None:
+        return None
+    
+    cursor = None
+    conn = None
+    
+    try:
+            conn = get_connection()
+            if conn is None:
+                raise Exception("Error de conexión")   
+            cursor = conn.cursor(dictionary=True)
+            
+            query = """SELECT id, id_negocio, nombre, precio, estado 
+                        FROM productos
+                        WHERE id = %s
+                        """
+            
+            cursor.execute(query, (id_producto,))
+            
+            producto =  cursor.fetchone()
+            if producto is None:
+                return None
+            
+            return cast(dict, producto)
+        
+    except Error:
+        raise 
+    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+        
 
 def obtener_productos_por_ids(ids_productos):
     
@@ -133,6 +173,71 @@ def listar_productos_por_negocio(id_negocio):
     
     except Error as e:
         raise DatabaseError(f"Error al obtener los productos: {str(e)}")
+    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+def actualizar_estado_repository(id_producto: int, estado: str):
+    conn = None
+    cursor = None
+    
+    try:
+        conn = get_connection()
+        if conn is None:
+            raise Exception("Error de conexión")
+
+        cursor = conn.cursor()
+        query_select = """
+            UPDATE productos
+            SET estado = %s
+            WHERE id = %s
+            """
+        cursor.execute(query_select, (estado,id_producto))
+        filas = cursor.rowcount
+        
+        if filas == 0:
+            raise ValidationError("los cambios no fueron afectados")
+        
+        conn.commit()
+        
+        return filas
+        
+    except Error as e:
+        raise DatabaseError(f"Error al obtener los productos: {str(e)}")
+    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+def editar_producto_repository(id_producto: int, nombre: str, precio: Decimal):
+    conn = None
+    cursor = None
+    
+    try:
+        conn = get_connection()
+        if conn is None:
+            raise Exception("Error de conexión")
+
+        cursor = conn.cursor()
+        query_update = """
+            UPDATE productos
+            SET nombre = %s, precio = %s
+            WHERE id = %s
+            """
+        cursor.execute(query_update, (nombre,precio,id_producto))
+        filas = cursor.rowcount
+        
+        conn.commit()
+        
+        return filas
+        
+    except Error as e:
+        raise DatabaseError(f"Error al actualizar el producto: {str(e)}")
     
     finally:
         if cursor:

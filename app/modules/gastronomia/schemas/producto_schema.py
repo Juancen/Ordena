@@ -14,3 +14,13 @@ class ProductoResponse(BaseModel):
     nombre: str
     precio: Decimal
     estado: str
+
+class ProductoEstadoUpdate(BaseModel):
+    estado: str
+
+class ProductoUpdate(BaseModel):
+    nombre: str
+    precio: float
+
+class MensajeResponse(BaseModel):
+    message: str
