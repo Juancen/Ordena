@@ -10,7 +10,6 @@ from app.modules.gastronomia.repositories.producto_repository import (
 from app.modules.gastronomia.exceptions.pedidos_errors import (ValidationError,NegocioNoEncontradoError)
 from typing import cast
 from decimal import Decimal, InvalidOperation
-from typing import cast
 
 def crear_producto(id_negocio: int, nombre: str, precio: float):
     negocio = obtener_negocio_por_id(id_negocio)
@@ -123,3 +122,4 @@ def editar_producto(id_producto, nombre, precio):
         raise ValidationError("No se pudo actualizar el producto")
 
     return {"message": "Producto actualizado correctamente"}
+

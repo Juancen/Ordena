@@ -15,14 +15,16 @@ from app.modules.gastronomia.repositories.pedidos_repository import (
     repository_actualizar_estado_pedido,
     obtener_pedidos,
     obtener_items_por_pedido,
-    contar_pedidos
+    contar_pedidos,
+    repository_actualizar_estado_pedido
     )
 import random
 import string
 ESTADOS_PEDIDO_VALIDOS = ["pendiente", "en_preparacion", "listo", "entregado", "cancelado"]
 MAX_LIMIT = 50
-from datetime import timedelta
+from decimal import Decimal
 from datetime import datetime
+
 def generar_codigo_publico(longitud=4):
     letras_upper = string.ascii_uppercase 
     numeros = string.digits
@@ -75,29 +77,34 @@ def crear_pedido(id_negocio,nombre_cliente,contacto_cliente,direccion_cliente,ti
     TIPO_ENTREGAS = ["delivery", "retiro_local"]
     TIPO_ORIGEN = ["interno","online"]
     
-    nombre_cliente = nombre_cliente.strip().lower() if nombre_cliente else nombre_cliente
+    nombre_cliente = nombre_cliente.strip() if nombre_cliente else nombre_cliente
     contacto_cliente = contacto_cliente.strip() if contacto_cliente else contacto_cliente
     direccion_cliente = direccion_cliente.strip() if direccion_cliente else direccion_cliente
     
     if not id_negocio:
         raise ValidationError("id_negocio es obligatorio")
+    
     if not nombre_cliente:
         raise ValidationError("nombre del cliente invalido")
     if not contacto_cliente:
         raise ValidationError("contacto del cliente invalido")
     if tipo_entrega not in TIPO_ENTREGAS:
         raise PedidoInvalidError("tipo de entrega invalido")
+    
     if tipo_entrega == "delivery":
         if not direccion_cliente:
             raise PedidoInvalidError("direccion de cliente obligatoria")
-        elif tipo_entrega == "retiro_local":
-            direccion_cliente = None
+    if tipo_entrega == "retiro_local":
+        direccion_cliente = None
+            
     if origen not in TIPO_ORIGEN:
         raise ValidationError("origen invalido")
     
     negocio = obtener_negocio_por_id(id_negocio)
     if not negocio:
         raise NegocioNoEncontradoError(f"Negocio {id_negocio} no existe")
+    if negocio["estado"] != "activo": # type: ignore
+        raise ValidationError("El negocio no está activo")
     
     validar_items_pedido(items_pedido)
     validar_items_duplicados(items_pedido)
@@ -117,13 +124,17 @@ def crear_pedido(id_negocio,nombre_cliente,contacto_cliente,direccion_cliente,ti
     productos_por_id = {producto["id"]: producto for producto in productos_db} # type: ignore
 
     items_preparados = []
-    precio_total = 0
+    precio_total = Decimal("0")
 
     for item in items_pedido:
         
         id_producto = item["id_producto"]
         cantidad = item["cantidad"]
         producto = productos_por_id[id_producto]
+        
+        if producto["estado"] != "activo": # type: ignore
+            raise ValidationError("Uno o más productos están inactivos")
+        
         precio_unitario = producto["precio"] # type: ignore
         subtotal = cantidad * precio_unitario
         precio_total += subtotal
@@ -227,7 +238,6 @@ def validar_transicion_estado(estado_actual, nuevo_estado):
     
     return True
 
-
 def listar_pedidos(
     id_negocio: int, 
     estado: str | None = None, 
@@ -245,6 +255,7 @@ def listar_pedidos(
 
     if estado is not None and estado not in ESTADOS_PEDIDO_VALIDOS:
         raise ValidationError(f"estado invalido: {estado}")
+    
       #validar limit:
     if limit <= 0:
             raise ValidationError("Numero de limite invalido")
@@ -292,3 +303,16 @@ def obtener_pedido_detalle(id_pedido):
     pedido["items"] = items
     return pedido
 
+def cancelar_pedido(id_pedido):
+    pedido = obtener_pedido_por_id(id_pedido)
+    
+    if not pedido:
+        raise ValidationError("El pedido no existe con el ID indicado")
+    
+    if pedido["estado"] != "pendiente":
+        raise ValidationError("Estado del pedido incorrecto para cancelar")
+
+    repository_actualizar_estado_pedido(id_pedido, "cancelado")
+    
+    
+    return {"message": "Pedido cancelado correctamente"}

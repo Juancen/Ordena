@@ -170,8 +170,8 @@ def repository_actualizar_estado_pedido(id_pedido, nuevo_estado, fecha_inicio=No
         """
         
         cursor.execute(query, (nuevo_estado, id_pedido ))
-        filas_afectadas = cursor.rowcount
         conn.commit()
+        filas_afectadas = cursor.rowcount
         return filas_afectadas > 0
     
     except Error as e:
