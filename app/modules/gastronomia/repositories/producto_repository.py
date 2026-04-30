@@ -6,7 +6,6 @@ ValidationError
 )
 from decimal import Decimal
 from typing import cast
-from typing import Optional, Dict
 
 
 def obtener_producto_por_id(id_producto)-> dict | None:
@@ -63,7 +62,7 @@ def obtener_productos_por_ids(ids_productos):
             query = f"""SELECT id, id_negocio, nombre, precio, estado 
                         FROM productos 
                         WHERE id IN ({placeholders})
-                        AND estado = 'activo' """
+                        """
             
             cursor.execute(query, ids_productos)
             return cursor.fetchall()

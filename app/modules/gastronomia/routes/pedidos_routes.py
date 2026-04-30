@@ -15,6 +15,7 @@ from app.modules.gastronomia.services.pedidos_service import (
     actualizar_estado_pedido,
     listar_pedidos,
     obtener_pedido_detalle,
+    cancelar_pedido
     )
 from app.modules.gastronomia.exceptions.pedidos_errors import (
     ValidationError,
@@ -155,3 +156,22 @@ def listar_pedidos_x_negocio(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
     
+
+@router.patch("/pedidos/{id_pedido}/cancelar")
+def cancelar_pedido_route(id_pedido):
+    try:
+        respuesta = cancelar_pedido(id_pedido)
+        
+        return respuesta
+    
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    except PedidoNoEncontradoError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+    except DatabaseError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
