@@ -10,25 +10,28 @@ from app.modules.turnos.repositories.turnos_repository import (
     get_agenda,
     get_turnos
 )
-def get_disponibilidad(profesional_id, servicio_id, fecha):
+
+
+def get_disponibilidad(db,profesional_id, servicio_id, fecha):
 
     # 1. servicio (duración)
-    servicio = get_servicio(servicio_id)
+    servicio = get_servicio(db,servicio_id)
     if not servicio:
         return []
+    
     duracion = servicio["duracion"]
 
     # 2. día de la semana
-    dia_semana = fecha.weekday() + 1  # ajustalo si usás otro formato
+    dia_semana = fecha.weekday() + 1
 
     # 3. agenda
-    agendas = get_agenda(profesional_id, dia_semana)
+    agendas = get_agenda(db,profesional_id, dia_semana)
 
     if not agendas:
         return []
 
     # 4. turnos ocupados
-    turnos = get_turnos(profesional_id, fecha)
+    turnos = get_turnos(db,profesional_id, fecha)
     
     turnos_convertidos = []
 
@@ -40,14 +43,14 @@ def get_disponibilidad(profesional_id, servicio_id, fecha):
         fin = datetime.combine(fecha, hora_fin)
 
         turnos_convertidos.append({
-            "hora_inicio": inicio,
-            "hora_fin": fin
+            "fecha_hora_inicio": inicio,
+            "fecha_hora_fin": fin
         })
 
     turnos = turnos_convertidos
 
     # ordenar turnos
-    turnos = sorted(turnos, key=lambda t: t["hora_inicio"])
+    turnos = sorted(turnos, key=lambda t: t["fecha_hora_inicio"])
 
     # 5. armar bloques agenda (datetime)
     bloques_agenda = []
