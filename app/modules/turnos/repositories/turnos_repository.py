@@ -1,30 +1,22 @@
 from app.db.connection import get_connection
 
-def get_servicio(servicio_id):
-    conn = get_connection()
+def get_servicio(db, servicio_id):
     
-    if conn is None:
-        raise Exception("Error: no se pudo conectar a la base de datos")
-    
-    cursor = conn.cursor(dictionary=True)
+    cursor = db.cursor(dictionary=True)
+
     query = "SELECT duracion FROM servicio WHERE id = %s"
     cursor.execute(query, (servicio_id,))
 
     result = cursor.fetchone()
 
-    cursor.close()
-    conn.close()
-
+    cursor.close()  # ✔️ esto sí
+    
     return result
 
 
-def get_agenda(profesional_id, dia_semana):
-    conn = get_connection()
-    
-    if conn is None:
-        raise Exception("Error: no se pudo conectar a la base de datos")
+def get_agenda(db,profesional_id, dia_semana):
 
-    cursor = conn.cursor(dictionary=True)
+    cursor = db.cursor(dictionary=True)
     
     query = """
         SELECT hora_inicio, hora_fin
@@ -36,18 +28,14 @@ def get_agenda(profesional_id, dia_semana):
     results = cursor.fetchall()
 
     cursor.close()
-    conn.close()
 
     return results
 
 
-def get_turnos(profesional_id, fecha):
-    conn = get_connection()
-    
-    if conn is None:
-        raise Exception("Error: no se pudo conectar a la base de datos")
+def get_turnos(db,profesional_id, fecha):
 
-    cursor = conn.cursor(dictionary=True)
+
+    cursor = db.cursor(dictionary=True)
 
     query = """
         SELECT hora_inicio, hora_fin
@@ -61,6 +49,38 @@ def get_turnos(profesional_id, fecha):
     results = cursor.fetchall()
 
     cursor.close()
-    conn.close()
 
     return results
+
+
+def crear_turno(db, turno_data):
+    query = """
+        INSERT INTO turnos (
+            profesional_id,
+            servicio_id,
+            fecha,
+            hora_inicio,
+            hora_fin,
+            cliente_nombre,
+            cliente_telefono,
+            estado
+        )
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """
+
+    values = (
+        turno_data["profesional_id"],
+        turno_data["servicio_id"],
+        turno_data["fecha"],
+        turno_data["hora_inicio"],
+        turno_data["hora_fin"],
+        turno_data["cliente_nombre"],
+        turno_data["cliente_telefono"],
+        "confirmado"
+    )
+
+    cursor = db.cursor()
+    cursor.execute(query, values)
+    db.commit()
+
+    return cursor.lastrowid
