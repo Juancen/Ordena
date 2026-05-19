@@ -1,5 +1,17 @@
 from app.db.connection import get_connection
 
+def get_profesional(db, profesional_id):
+    cursor = db.cursor(dictionary=True)
+
+    query = "SELECT id FROM profesional WHERE id = %s"
+    cursor.execute(query, (profesional_id,))
+
+    result = cursor.fetchone()
+
+    cursor.close()
+
+    return result
+
 def get_servicio(db, servicio_id):
     
     cursor = db.cursor(dictionary=True)
@@ -9,7 +21,7 @@ def get_servicio(db, servicio_id):
 
     result = cursor.fetchone()
 
-    cursor.close()  # ✔️ esto sí
+    cursor.close()
     
     return result
 
@@ -84,3 +96,76 @@ def crear_turno(db, turno_data):
     db.commit()
 
     return cursor.lastrowid
+
+def get_turno_by_id(db, turno_id: int):
+    query = """
+        SELECT id, estado,fecha, hora_inicio
+        FROM turnos
+        WHERE id = %s
+    """
+    
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(query, (turno_id,))
+    
+    return cursor.fetchone()
+
+def actualizar_estado_turno(db, turno_id: int, estado: str):
+    query = """
+        UPDATE turnos
+        SET estado = %s
+        WHERE id = %s
+    """
+    
+    cursor = db.cursor()
+    cursor.execute(query, (estado, turno_id))
+    db.commit()
+    
+def listar_turnos_repository(db, profesional_id=None, fecha=None, estado=None):
+    query = "SELECT * FROM turnos"
+    condiciones = []
+    params = []
+
+    if profesional_id:
+        condiciones.append("profesional_id = %s")
+        params.append(profesional_id)
+
+    if fecha:
+        condiciones.append("fecha = %s")
+        params.append(fecha)
+
+    if estado:
+        condiciones.append("estado = %s")
+        params.append(estado)
+
+    # armamos el WHERE solo si hay filtros
+    if condiciones:
+        query += " WHERE " + " AND ".join(condiciones)
+
+    cursor = db.cursor(dictionary=True)
+    cursor.execute(query, params)
+    result = cursor.fetchall()
+    cursor.close()
+
+    return result
+
+def existe_turno_solapado(db, profesional_id, fecha, hora_inicio, hora_fin):
+    cursor = db.cursor(dictionary=True)
+
+    query = """
+        SELECT id FROM turnos
+        WHERE profesional_id = %s
+        AND fecha = %s
+        AND estado != 'cancelado'
+        AND (
+            hora_inicio < %s
+            AND hora_fin > %s
+        )
+    """
+
+    cursor.execute(query, (profesional_id, fecha, hora_fin, hora_inicio))
+
+    result = cursor.fetchone()
+
+    cursor.close()
+
+    return result

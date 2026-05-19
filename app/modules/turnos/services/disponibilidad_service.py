@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from fastapi import HTTPException
 from app.modules.turnos.services.calculos import (
     calcular_bloques_libres,
     generar_slots,
@@ -8,29 +8,37 @@ from app.modules.turnos.services.calculos import (
 from app.modules.turnos.repositories.turnos_repository import (
     get_servicio,
     get_agenda,
-    get_turnos
+    get_turnos,
 )
 
 
 def get_disponibilidad(db,profesional_id, servicio_id, fecha):
+    
+    hoy = datetime.now().date()
+    
+    if fecha < hoy:
+        raise HTTPException(
+        status_code=400,
+        detail="No se puede consultar disponibilidad de fechas pasadas"
+    )
+    
 
-    # 1. servicio (duración)
+    # servicio (duración)
     servicio = get_servicio(db,servicio_id)
     if not servicio:
-        return []
+        raise HTTPException(status_code=404, detail="El servicio no existe")
     
     duracion = servicio["duracion"]
 
-    # 2. día de la semana
+    #. día de la semana
     dia_semana = fecha.weekday() + 1
 
-    # 3. agenda
+    #  agenda
     agendas = get_agenda(db,profesional_id, dia_semana)
-
     if not agendas:
         return []
 
-    # 4. turnos ocupados
+    #  turnos ocupados
     turnos = get_turnos(db,profesional_id, fecha)
     
     turnos_convertidos = []
@@ -43,14 +51,14 @@ def get_disponibilidad(db,profesional_id, servicio_id, fecha):
         fin = datetime.combine(fecha, hora_fin)
 
         turnos_convertidos.append({
-            "fecha_hora_inicio": inicio,
-            "fecha_hora_fin": fin
+            "hora_inicio": inicio,
+            "hora_fin": fin
         })
 
     turnos = turnos_convertidos
 
     # ordenar turnos
-    turnos = sorted(turnos, key=lambda t: t["fecha_hora_inicio"])
+    turnos = sorted(turnos, key=lambda t: t["hora_inicio"])
 
     # 5. armar bloques agenda (datetime)
     bloques_agenda = []
@@ -73,5 +81,8 @@ def get_disponibilidad(db,profesional_id, servicio_id, fecha):
 
     # 8. filtrar pasado
     slots = filtrar_pasado(slots, fecha)
+    
+    if fecha == hoy and not slots:
+        raise HTTPException(status_code=409, detail="El horario no está disponible")
 
     return slots

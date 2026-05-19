@@ -1,9 +1,13 @@
 from fastapi import FastAPI
-from app.modules.gastronomia.routes.pedidos_routes import router as pedidos_router
-from app.modules.gastronomia.routes.productos_routes import router as productos_routes
 from app.modules.turnos.routers.turno import router as router
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="Ordena API")
 
-app.include_router(productos_routes, prefix="/productos")
-app.include_router(pedidos_router, prefix="/gastronomia")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(router)
