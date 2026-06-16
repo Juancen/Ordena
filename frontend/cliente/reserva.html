@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+
+<head>
+    <link rel="stylesheet" href="reserva.css">
+    <meta charset="UTF-8">
+    <title>Reservar turno</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="header-card">
+        <h2>Peluquería Lucas</h2>
+    </div>
+
+
+    <div class="container">
+
+        <!-- IZQUIERDA -->
+        <div class="card main">
+
+            <h2>Reservá tu turno</h2>
+            <p>Elegí el servicio, la fecha y el horario.</p>
+
+            <div class="bloque-fecha">
+
+                <div class="header-fecha">
+                    <span class="step">1.</span>
+                    <h3>Seleccioná la fecha</h3>
+                </div>
+
+                <div class="fechas-opciones">
+                    <button class="fecha-btn active" id="btn-hoy">
+                        <span>Hoy</span>
+                        <strong id="hoy-fecha"></strong>
+                    </button>
+
+                    <button class="fecha-btn" id="btn-manana">
+                        <span>Mañana</span>
+                        <strong id="manana-fecha"></strong>
+                    </button>
+
+                    <button class="fecha-btn outline" onclick=abrirCalendario()>
+                        📅 Elegir otro día
+                        <input type="date" id="fecha-hidden" class="input-oculto">
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div>
+                    <div class="header-fecha">
+                        <span class="step">2.</span>
+                        <h3>Seleccioná el Servicio</h3>
+                    </div>
+
+                    <select id="servicio">
+                        <option value="" disabled selected>Seleccione un servicio</option>
+                        <option value="1" data-duracion="30">Corte de Pelo</option>
+                        <option value="2" data-duracion="45">Corte + Barba</option>
+                        <option value="3" data-duracion="20">Barba</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="bloque-profesional" id="bloque-profesional" style="display: none;">
+
+                <h3>3. Elegí un profesional</h3>
+
+                <div class="profesionales-container" id="profesionales-container"></div>
+
+            </div>
+
+            <div class="bloque-horarios">
+
+                <div class="header-horarios">
+                    <div class="header-fecha">
+                        <span class="step">3.</span>
+                        <h3>Elegí un horario disponible</h3>
+                    </div>
+
+
+                    <div class="leyenda">
+                        <span class="dot disponible"></span> Disponible
+                        <span class="dot ocupado"></span> Ocupado
+                    </div>
+                </div>
+
+                <div id="horarios" class="horarios"></div>
+                <div id="confirmacion-turno" class="confirmacion-card hidden">
+
+                    <!-- HEADER -->
+                    <div class="confirmacion-header">
+                        <div class="icono-check">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div>
+                            <h3>¡Tu turno ya está reservado!</h3>
+                            <p id="confirmacion-nombre">Te esperamos, ...</p>
+                        </div>
+                    </div>
+
+                    <!-- DETALLES -->
+                    <div class="confirmacion-detalles">
+
+                        <div class="item">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <div>
+                                <small>Fecha</small>
+                                <strong id="confirmacion-fecha"></strong>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <i class="fa-solid fa-clock"></i>
+                            <div>
+                                <small>Hora</small>
+                                <strong id="confirmacion-hora"></strong>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <i class="fa-solid fa-stopwatch"></i>
+                            <div>
+                                <small>Duración</small>
+                                <strong id="confirmacion-duracion"></strong>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <i class="fa-solid fa-user"></i>
+                            <div>
+                                <small>Profesional</small>
+                                <strong id="confirmacion-profesional"></strong>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- INFO -->
+                    <div class="info-box">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Te llegará un recordatorio con los detalles de tu turno a tu WhatsApp.
+                    </div>
+
+                    <!-- WARNING -->
+                    <div class="warning-box">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Si necesitás cancelar o reprogramar tu turno, comunicate por WhatsApp.
+                    </div>
+
+                </div>
+                <div class="info-turno" id="info-turno">
+                    <div class="duracion" id="duracion">
+                    </div>
+
+                    <div class="turno-seleccionado" id="turno-seleccionado">
+                    </div>
+                </div>
+
+            </div>
+
+            <h3>Tus datos</h3>
+
+            <input type="text" id="nombre" placeholder="Nombre completo">
+            <input type="text" id="telefono" placeholder="Teléfono">
+
+            <button onclick="reservar()">Reservar turno</button>
+
+        </div>
+
+        <!-- DERECHA -->
+        <div class="card resumen">
+
+            <h3>Resumen de tu reserva</h3>
+
+            <div class="item-resumen">
+                <i class="fa-solid fa-gear"></i>
+                <div>
+                    <span>Servicio</span>
+                    <strong id="res-servicio">-</strong>
+                </div>
+            </div>
+
+            <div class="item-resumen">
+                <i class="fa-solid fa-calendar-days"></i>
+                <div>
+                    <span>Fecha</span>
+                    <strong id="res-fecha">-</strong>
+                </div>
+            </div>
+
+            <div class="item-resumen">
+                <i class="fa-solid fa-clock"></i>
+                <div>
+                    <span>Horario</span>
+                    <strong id="res-hora">-</strong>
+                </div>
+            </div>
+
+            <div class="item-resumen">
+                <i class="fa-solid fa-stopwatch"></i>
+                <div>
+                    <span>Duración</span>
+                    <strong id="res-duracion">-</strong>
+                </div>
+            </div>
+
+            <div class="item-resumen">
+                <i class="fa-solid fa-user"></i>
+                <div>
+                    <span>Profesional</span>
+                    <strong id="res-profesional">-</strong>
+                </div>
+            </div>
+        </div>
+
+        <script src="reserva.js"></script>
+</body>
+
+</html>
