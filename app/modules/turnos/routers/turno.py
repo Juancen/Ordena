@@ -1,16 +1,49 @@
-from app.modules.turnos.services.disponibilidad_service import get_disponibilidad
+from app.modules.turnos.services.disponibilidad_service import (
+    get_disponibilidad,
+    get_agenda_completa,
+    listar_profesionales_por_servicio)
 from app.modules.turnos.services.turno_service import (
     crear_turno_service,
     cancelar_turno_service,
     listar_turnos_service
     )
+from app.db.database import SessionLocal
+from app.modules.turnos.models.models_turno import Turno
 from app.modules.turnos.schemas.turno import CrearTurnoRequest
-from app.db.dependencies import get_db
+from app.db.dependencies import get_db,get_db_orm
 from datetime import datetime, date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 router = APIRouter()
 from typing import Optional
+
+@router.get("/profesionales")
+def get_profesionales(servicio_id: int, db: Session = Depends(get_db_orm)):
+    return listar_profesionales_por_servicio(db, servicio_id)
+
+
+@router.get("/agenda-completa")
+def agenda_completa(profesional_id: int, servicio_id: int, fecha: str, db=Depends(get_db_orm)):
+
+    fecha_dt = datetime.strptime(fecha, "%Y-%m-%d").date()
+
+    dia_semana = fecha_dt.weekday() + 1
+
+    agenda = get_agenda_completa(
+        db,
+        profesional_id,
+        dia_semana,
+        fecha_dt,
+        servicio_id
+    )
+    return [
+        {
+        "inicio": a["inicio"].strftime("%H:%M"),
+        "fin": a["fin"].strftime("%H:%M"),
+        "estado": a["estado"]
+        }
+        for a in agenda
+    ]
 
 @router.get("/disponibilidad")
 def disponibilidad(profesional_id: int, servicio_id: int, fecha: str, db=Depends(get_db)):
@@ -27,7 +60,7 @@ def disponibilidad(profesional_id: int, servicio_id: int, fecha: str, db=Depends
     ]
 
 @router.post("/turnos")
-def crear_turno_endpoint(data: CrearTurnoRequest, db=Depends(get_db)):
+def crear_turno_endpoint(data: CrearTurnoRequest, db: Session=Depends(get_db_orm)):
     
         turno_id = crear_turno_service(db, data)
         
@@ -62,3 +95,13 @@ def listar_turnos(
         return turnos
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+@router.get("/test-turnos")
+def test_turnos():
+    db = SessionLocal()
+
+    turnos = db.query(Turno).all()
+
+    db.close()
+
+    return turnos

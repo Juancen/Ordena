@@ -1,47 +1,58 @@
 from app.db.connection import get_connection
+from sqlalchemy import text
+from app.modules.turnos.models.models_turno import Profesional,Profesional_Servicio
+
 
 def get_profesional(db, profesional_id):
-    cursor = db.cursor(dictionary=True)
 
-    query = "SELECT id FROM profesional WHERE id = %s"
-    cursor.execute(query, (profesional_id,))
-
-    result = cursor.fetchone()
-
-    cursor.close()
-
-    return result
+    query = """
+        SELECT id 
+        FROM profesionales 
+        WHERE id = :profesional_id
+    """
+    result = db.execute(
+        text(query),
+        {"profesional_id": profesional_id}
+    )
+    return result.mappings().first()
 
 def get_servicio(db, servicio_id):
-    
-    cursor = db.cursor(dictionary=True)
 
-    query = "SELECT duracion FROM servicio WHERE id = %s"
-    cursor.execute(query, (servicio_id,))
+    query = """
+        SELECT duracion 
+        FROM servicios 
+        WHERE id = :servicio_id
+    """
 
-    result = cursor.fetchone()
+    result = db.execute(
+        text(query),
+        {"servicio_id": servicio_id}
+    )
 
-    cursor.close()
-    
-    return result
+    return result.mappings().first()
 
 
 def get_agenda(db,profesional_id, dia_semana):
 
-    cursor = db.cursor(dictionary=True)
     
     query = """
         SELECT hora_inicio, hora_fin
-        FROM agenda
-        WHERE profesional_id = %s AND dia_semana = %s
+        FROM agendas
+        WHERE profesional_id = :profesional_id 
+AND dia_semana = :dia_semana
     """
 
-    cursor.execute(query, (profesional_id, dia_semana))
-    results = cursor.fetchall()
+    
+    results =db.execute(
+        text(query),
+        {
+            "profesional_id": profesional_id,
+            "dia_semana": dia_semana
+        }
+    )
+    
 
-    cursor.close()
-
-    return results
+    return results.mappings().all()
 
 
 def get_turnos(db,profesional_id, fecha):
@@ -77,25 +88,34 @@ def crear_turno(db, turno_data):
             cliente_telefono,
             estado
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES (
+            :profesional_id,
+            :servicio_id,
+            :fecha,
+            :hora_inicio,
+            :hora_fin,
+            :cliente_nombre,
+            :cliente_telefono,
+            :estado
+        )
     """
 
-    values = (
-        turno_data["profesional_id"],
-        turno_data["servicio_id"],
-        turno_data["fecha"],
-        turno_data["hora_inicio"],
-        turno_data["hora_fin"],
-        turno_data["cliente_nombre"],
-        turno_data["cliente_telefono"],
-        "confirmado"
+    result = db.execute(
+        text(query),
+        {
+            "profesional_id": turno_data["profesional_id"],
+            "servicio_id": turno_data["servicio_id"],
+            "fecha": turno_data["fecha"],
+            "hora_inicio": turno_data["hora_inicio"],
+            "hora_fin": turno_data["hora_fin"],
+            "cliente_nombre": turno_data["cliente_nombre"],
+            "cliente_telefono": turno_data["cliente_telefono"],
+            "estado": "confirmado"
+        }
     )
-
-    cursor = db.cursor()
-    cursor.execute(query, values)
     db.commit()
 
-    return cursor.lastrowid
+    return result.lastrowid
 
 def get_turno_by_id(db, turno_id: int):
     query = """
@@ -149,23 +169,33 @@ def listar_turnos_repository(db, profesional_id=None, fecha=None, estado=None):
     return result
 
 def existe_turno_solapado(db, profesional_id, fecha, hora_inicio, hora_fin):
-    cursor = db.cursor(dictionary=True)
 
     query = """
-        SELECT id FROM turnos
-        WHERE profesional_id = %s
-        AND fecha = %s
+        SELECT id 
+        FROM turnos
+        WHERE profesional_id = :profesional_id
+        AND fecha = :fecha
         AND estado != 'cancelado'
         AND (
-            hora_inicio < %s
-            AND hora_fin > %s
+            hora_inicio < :hora_fin
+            AND hora_fin > :hora_inicio
         )
     """
 
-    cursor.execute(query, (profesional_id, fecha, hora_fin, hora_inicio))
+    result = db.execute(
+        text(query),
+        {
+            "profesional_id": profesional_id,
+            "fecha": fecha,
+            "hora_inicio": hora_inicio,
+            "hora_fin": hora_fin
+        }
+    )
 
-    result = cursor.fetchone()
+    return result.mappings().first()
 
-    cursor.close()
-
-    return result
+def get_profesionales_by_servicio(db, servicio_id):
+    return db.query(Profesional)\
+        .join(Profesional_Servicio, Profesional.id == Profesional_Servicio.profesional_id)\
+        .filter(Profesional_Servicio.servicio_id == servicio_id)\
+        .all()

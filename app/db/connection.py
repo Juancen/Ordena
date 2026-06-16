@@ -6,5 +6,5 @@ def get_connection():
         host="localhost",
         user="root",
         password="",
-        database="proyecto_ordena"
+        database="shift"
     )

@@ -50,10 +50,36 @@ def filtrar_pasado(slots, fecha):
 
     resultado = []
 
-    for inicio, fin in slots:
+    for slot in slots:
+        inicio = slot["inicio"]
+
         if fecha == ahora.date():
             if inicio <= ahora:
                 continue
-        resultado.append((inicio, fin))
+
+        resultado.append(slot) 
 
     return resultado
+
+def calcular_slots(bloques_agenda,turnos,duracion):
+    
+    slots = generar_slots(bloques_agenda, duracion)
+    
+    resultado = []
+    
+    for  s_inicio, s_fin in slots:
+    
+        ocupado = any( s_inicio < t["hora_fin"] and s_fin > t["hora_inicio"]
+            for t in turnos
+    )
+    
+        resultado.append({
+            "inicio": s_inicio,
+            "fin": s_fin,
+            "estado": "ocupado" if ocupado else "disponible"
+            })
+        
+    resultado = sorted(resultado, key=lambda x: x["inicio"])
+    
+    return resultado
+    

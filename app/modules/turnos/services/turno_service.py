@@ -26,7 +26,11 @@ def crear_turno_service(db, data):
 
     # 2. Convertir a datetime (para lógica)
     fecha_dt = datetime.strptime(fecha_str, "%Y-%m-%d").date()
-    hora_inicio_dt = datetime.strptime(hora_inicio_str, "%H:%M")
+    try:
+        hora_inicio_dt = datetime.strptime(hora_inicio_str, "%H:%M:%S")
+    except ValueError:
+        hora_inicio_dt = datetime.strptime(hora_inicio_str, "%H:%M")
+        
     hora_inicio_dt = datetime.combine(fecha_dt, hora_inicio_dt.time())
     
     if fecha_dt < hoy:
@@ -68,8 +72,8 @@ def crear_turno_service(db, data):
     hora_fin_dt = hora_inicio_dt + timedelta(minutes=duracion)
     
     # 7. Convertir a string para guardar
-    hora_inicio_db = hora_inicio_dt.strftime("%H:%M")
-    hora_fin_db = hora_fin_dt.strftime("%H:%M")
+    hora_inicio_db = hora_inicio_dt.strftime("%H:%M:%S")
+    hora_fin_db = hora_fin_dt.strftime("%H:%M:%S")
 
     # validar que el horario esté dentro de algún bloque
     dentro_agenda = False
