@@ -1,16 +1,16 @@
-from app.modules.turnos.services.disponibilidad_service import (
+from backend.app.modules.turnos.services.disponibilidad_service import (
     get_disponibilidad,
     get_agenda_completa,
     listar_profesionales_por_servicio)
-from app.modules.turnos.services.turno_service import (
+from backend.app.modules.turnos.services.turno_service import (
     crear_turno_service,
     cancelar_turno_service,
     listar_turnos_service
     )
-from app.db.database import SessionLocal
-from app.modules.turnos.models.models_turno import Turno
-from app.modules.turnos.schemas.turno import CrearTurnoRequest
-from app.db.dependencies import get_db,get_db_orm
+from backend.app.db.database import SessionLocal
+from backend.app.modules.turnos.models.models_turno import Turno
+from backend.app.modules.turnos.schemas.turno import CrearTurnoRequest
+from backend.app.db.dependencies import get_db,get_db_orm
 from datetime import datetime, date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
