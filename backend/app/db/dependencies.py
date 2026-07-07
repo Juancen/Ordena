@@ -1,5 +1,5 @@
-from app.db.connection import get_connection
-from app.db.database import SessionLocal
+from backend.app.db.connection import get_connection
+from backend.app.db.database import SessionLocal
 
 
 def get_db():

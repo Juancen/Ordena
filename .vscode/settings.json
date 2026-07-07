@@ -1,5 +1,7 @@
 {
     "python.analysis.extraPaths": [
-        "./backend_ordena/app"
-    ]
+        "C:/Users/judao/OneDrive/Escritorio/proyecto_Shift/backend"
+    ],
+    "python.analysis.diagnosticMode": "workspace",
+    "liveServer.settings.port": 5501
 }

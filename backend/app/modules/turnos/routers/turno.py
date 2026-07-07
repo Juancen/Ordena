@@ -7,6 +7,7 @@ from backend.app.modules.turnos.services.turno_service import (
     cancelar_turno_service,
     listar_turnos_service
     )
+from backend.app.modules.turnos.models.models_turno import Servicio
 from backend.app.db.database import SessionLocal
 from backend.app.modules.turnos.models.models_turno import Turno
 from backend.app.modules.turnos.schemas.turno import CrearTurnoRequest
@@ -83,7 +84,7 @@ def listar_turnos(
     profesional_id: Optional[int] = None,
     fecha: Optional[date] = None,
     estado: Optional[str] = None,
-    db = Depends(get_db)
+    db = Depends(get_db_orm)
 ):
     try:
         turnos = listar_turnos_service(
@@ -95,13 +96,7 @@ def listar_turnos(
         return turnos
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    
-@router.get("/test-turnos")
-def test_turnos():
-    db = SessionLocal()
 
-    turnos = db.query(Turno).all()
-
-    db.close()
-
-    return turnos
+@router.get("/servicios")
+def get_servicios(db: Session = Depends(get_db_orm)):
+    return db.query(Servicio).all()

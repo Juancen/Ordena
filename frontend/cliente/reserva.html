@@ -5,6 +5,7 @@
 <head>
     <link rel="stylesheet" href="reserva.css">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservar turno</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,216 +15,277 @@
 </head>
 
 <body>
+    <header class="header-shift">
+        <div class="portada-negocio">
+        </div>
 
-    <div class="header-card">
-        <h2>Peluquería Lucas</h2>
-    </div>
+        <div class="tarjeta-info">
+            <div class="icono-rubro">
+                <i class="fa-solid fa-scissors"></i>
+            </div>
 
+            <h1 class="titulo-negocio">PELUQUERÍA LUCAS</h1>
+            <p class="subtitulo-negocio">Tu estilo, nuestra pasión</p>
+
+            <hr class="separador">
+
+            <p class="mencion-marca">Reservas online mediante <strong>Shift</strong></p>
+        </div>
+    </header>
+    <h2>Reservá tu turno</h2>
 
     <div class="container">
 
         <!-- IZQUIERDA -->
         <div class="card main">
-
-            <h2>Reservá tu turno</h2>
             <p>Elegí el servicio, la fecha y el horario.</p>
+            <div class="wizard">
+                <div class="wizard-track">
+                    <!-- Fecha -->
+                    <section class="bloque-fecha bloque-flujo" id="bloque-fecha">
+                        <div class="header">
+                            <div class="header-left">
+                                <span class="step">1.</span>
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <h3>Seleccioná la fecha</h3>
+                            </div>
+                        </div>
 
-            <div class="bloque-fecha">
+                        <div class="fechas-opciones">
+                            <button class="fecha-btn" id="btn-hoy">
+                                <span class="text-fecha">Hoy</span>
+                                <strong id="hoy-fecha"></strong>
+                            </button>
 
-                <div class="header-fecha">
-                    <span class="step">1.</span>
-                    <h3>Seleccioná la fecha</h3>
+                            <button class="fecha-btn" id="btn-manana">
+                                <span class="text-fecha">Mañana</span>
+                                <strong id="manana-fecha"></strong>
+                            </button>
+
+                            <button class="fecha-btn outline" onclick=abrirCalendario()>
+                                <span class="text-fecha">📅 Elegir otro día</span>
+                                <input type="date" id="fecha-hidden" class="input-oculto">
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- Servicio -->
+                    <section class="bloque-servicio bloque-flujo" id="bloque-servicio">
+                        <div class="header">
+                            <div class="header-left">
+                                <i class="fa-solid fa-scissors"></i>
+                                <span class="step">2.</span>
+                                <h3>Seleccioná el servicio</h3>
+                            </div>
+                        </div>
+                        <div id="servicios-container" class="servicios-grid"></div>
+                    </section>
+                    <!-- Profesional -->
+                    <section class="bloque-profesional bloque-flujo" id="bloque-profesional">
+                        <div class="header">
+                            <div class="header-left">
+                                <i class="fa-solid fa-user"></i>
+                                <span class="step">3.</span>
+                                <h3>Elegí un profesional</h3>
+                            </div>
+                        </div>
+                        <div class="profesionales-container" id="profesionales-container"></div>
+                    </section>
+                    <!-- Horarios -->
+                    <section class="bloque-horarios bloque-flujo" id="bloque-horarios">
+                        <div class="header">
+                            <div class="header-left">
+                                <i class="fa-solid fa-clock"></i>
+                                <span class="step">4.</span>
+                                <h3>Elegí un horario disponible</h3>
+                            </div>
+                        </div>
+
+                        <div class="leyenda">
+                            <span class="dot disponible"></span> Disponible
+                            <span class="dot ocupado"></span> Ocupado
+                        </div>
+
+                        <div id="horarios" class="horarios"></div>
+
+                        <div class="info-turno" id="info-turno">
+                            <div class="duracion" id="duracion"></div>
+                            <div class="turno-seleccionado" id="turno-seleccionado"></div>
+                        </div>
+                    </section>
+                    <!-- Datos -->
+                    <section class="bloque-datos bloque-flujo" id="bloque-datos">
+                        <div class="header">
+                            <div class="header-left">
+                                <i class="fa-solid fa-id-card"></i>
+                                <span class="step">5.</span>
+                                <h3>Tus datos</h3>
+                            </div>
+                        </div>
+
+                        <div class="inputs-row">
+
+                            <div class="input-group">
+                                <label>Nombre y apellido</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-user"></i>
+                                    <input type="text" id="nombre" placeholder="Ej: Juan Pérez">
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Teléfono (WhatsApp)</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <input type="text" id="telefono" placeholder="Ej: 299 123 4567">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="error-reserva" class="error hidden"></div>
+
+                        <div class="info-confirmacion">
+                            <i class="fa-solid fa-lock"></i>
+                            Tus datos están protegidos y solo se usarán para confirmar tu turno.
+                        </div>
+                    </section>
+
+                    <!-- Confirmación -->
+                    <section class="bloque-confirmacion bloque-flujo" id="bloque-confirmacion">
+                        <div class="card resumen" id="resumen">
+                            <h3>Resumen de tu reserva</h3>
+
+                            <div class="item-resumen">
+                                <i class="fa-solid fa-gear"></i>
+                                <div>
+                                    <span>Servicio</span>
+                                    <strong id="res-servicio">-</strong>
+                                </div>
+                            </div>
+
+                            <div class="item-resumen">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <div>
+                                    <span>Fecha</span>
+                                    <strong id="res-fecha">-</strong>
+                                </div>
+                            </div>
+
+                            <div class="item-resumen">
+                                <i class="fa-solid fa-clock"></i>
+                                <div>
+                                    <span>Horario</span>
+                                    <strong id="res-hora">-</strong>
+                                </div>
+                            </div>
+
+                            <div class="item-resumen">
+                                <i class="fa-solid fa-stopwatch"></i>
+                                <div>
+                                    <span>Duración</span>
+                                    <strong id="res-duracion">-</strong>
+                                </div>
+                            </div>
+
+                            <div class="item-resumen">
+                                <i class="fa-solid fa-user"></i>
+                                <div>
+                                    <span>Profesional</span>
+                                    <strong id="res-profesional">-</strong>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- Éxito -->
+                    <section class="bloque-exito bloque-flujo" id="bloque-exito">
+                        <div id="confirmacion-wrapper">
+
+                            <div id="confirmacion-turno" class="confirmacion-card">
+                                <!-- HEADER -->
+                                <div class="confirmacion-header">
+                                    <div class="icono-check">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
+                                    <div>
+                                        <h3>¡Tu turno ya está reservado!</h3>
+                                        <p id="confirmacion-nombre">Te esperamos, ...</p>
+                                    </div>
+                                </div>
+
+                                <!-- DETALLES -->
+                                <div class="confirmacion-detalles">
+
+                                    <div class="item">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <div>
+                                            <small>Fecha</small>
+                                            <strong id="confirmacion-fecha"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <i class="fa-solid fa-clock"></i>
+                                        <div>
+                                            <small>Hora</small>
+                                            <strong id="confirmacion-hora"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <i class="fa-solid fa-stopwatch"></i>
+                                        <div>
+                                            <small>Duración</small>
+                                            <strong id="confirmacion-duracion"></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div>
+                                            <small>Profesional</small>
+                                            <strong id="confirmacion-profesional"></strong>
+                                        </div>
+                                    </div>
+
+                                </div>
+                    </section>
+
                 </div>
+                <div class="wizard-footer">
 
-                <div class="fechas-opciones">
-                    <button class="fecha-btn active" id="btn-hoy">
-                        <span>Hoy</span>
-                        <strong id="hoy-fecha"></strong>
+                    <button id="btn-volver">
+
+                        Volver
+
                     </button>
 
-                    <button class="fecha-btn" id="btn-manana">
-                        <span>Mañana</span>
-                        <strong id="manana-fecha"></strong>
+                    <button id="btn-continuar">
+
+                        Continuar
+
                     </button>
 
-                    <button class="fecha-btn outline" onclick=abrirCalendario()>
-                        📅 Elegir otro día
-                        <input type="date" id="fecha-hidden" class="input-oculto">
-                    </button>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div>
-                    <div class="header-fecha">
-                        <span class="step">2.</span>
-                        <h3>Seleccioná el Servicio</h3>
-                    </div>
-
-                    <select id="servicio">
-                        <option value="" disabled selected>Seleccione un servicio</option>
-                        <option value="1" data-duracion="30">Corte de Pelo</option>
-                        <option value="2" data-duracion="45">Corte + Barba</option>
-                        <option value="3" data-duracion="20">Barba</option>
-                    </select>
-
                 </div>
             </div>
-
-            <div class="bloque-profesional" id="bloque-profesional" style="display: none;">
-
-                <h3>3. Elegí un profesional</h3>
-
-                <div class="profesionales-container" id="profesionales-container"></div>
-
-            </div>
-
-            <div class="bloque-horarios">
-
-                <div class="header-horarios">
-                    <div class="header-fecha">
-                        <span class="step">3.</span>
-                        <h3>Elegí un horario disponible</h3>
-                    </div>
-
-
-                    <div class="leyenda">
-                        <span class="dot disponible"></span> Disponible
-                        <span class="dot ocupado"></span> Ocupado
-                    </div>
-                </div>
-
-                <div id="horarios" class="horarios"></div>
-                <div id="confirmacion-turno" class="confirmacion-card hidden">
-
-                    <!-- HEADER -->
-                    <div class="confirmacion-header">
-                        <div class="icono-check">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <div>
-                            <h3>¡Tu turno ya está reservado!</h3>
-                            <p id="confirmacion-nombre">Te esperamos, ...</p>
-                        </div>
-                    </div>
-
-                    <!-- DETALLES -->
-                    <div class="confirmacion-detalles">
-
-                        <div class="item">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            <div>
-                                <small>Fecha</small>
-                                <strong id="confirmacion-fecha"></strong>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <i class="fa-solid fa-clock"></i>
-                            <div>
-                                <small>Hora</small>
-                                <strong id="confirmacion-hora"></strong>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <i class="fa-solid fa-stopwatch"></i>
-                            <div>
-                                <small>Duración</small>
-                                <strong id="confirmacion-duracion"></strong>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <i class="fa-solid fa-user"></i>
-                            <div>
-                                <small>Profesional</small>
-                                <strong id="confirmacion-profesional"></strong>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- INFO -->
-                    <div class="info-box">
-                        <i class="fa-solid fa-circle-info"></i>
-                        Te llegará un recordatorio con los detalles de tu turno a tu WhatsApp.
-                    </div>
-
-                    <!-- WARNING -->
-                    <div class="warning-box">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        Si necesitás cancelar o reprogramar tu turno, comunicate por WhatsApp.
-                    </div>
-
-                </div>
-                <div class="info-turno" id="info-turno">
-                    <div class="duracion" id="duracion">
-                    </div>
-
-                    <div class="turno-seleccionado" id="turno-seleccionado">
-                    </div>
-                </div>
-
-            </div>
-
-            <h3>Tus datos</h3>
-
-            <input type="text" id="nombre" placeholder="Nombre completo">
-            <input type="text" id="telefono" placeholder="Teléfono">
-
-            <button onclick="reservar()">Reservar turno</button>
 
         </div>
 
         <!-- DERECHA -->
-        <div class="card resumen">
 
-            <h3>Resumen de tu reserva</h3>
+    </div><!-- FIN CONTAINER -->
+    <footer class="footer-shift">
+        <div class="footer-contenido">
+            <img src="static/logo-blanco.png" alt="Shifts Logo" class="footer-logo">
+            <span class="slogan-footer">Organizá. Gestioná. Hacé que fluya.</span>
 
-            <div class="item-resumen">
-                <i class="fa-solid fa-gear"></i>
-                <div>
-                    <span>Servicio</span>
-                    <strong id="res-servicio">-</strong>
-                </div>
-            </div>
-
-            <div class="item-resumen">
-                <i class="fa-solid fa-calendar-days"></i>
-                <div>
-                    <span>Fecha</span>
-                    <strong id="res-fecha">-</strong>
-                </div>
-            </div>
-
-            <div class="item-resumen">
-                <i class="fa-solid fa-clock"></i>
-                <div>
-                    <span>Horario</span>
-                    <strong id="res-hora">-</strong>
-                </div>
-            </div>
-
-            <div class="item-resumen">
-                <i class="fa-solid fa-stopwatch"></i>
-                <div>
-                    <span>Duración</span>
-                    <strong id="res-duracion">-</strong>
-                </div>
-            </div>
-
-            <div class="item-resumen">
-                <i class="fa-solid fa-user"></i>
-                <div>
-                    <span>Profesional</span>
-                    <strong id="res-profesional">-</strong>
-                </div>
-            </div>
+            <p class="footer-derechos">&copy; 2026 Shift. Todos los derechos reservados.</p>
         </div>
+    </footer>
 
-        <script src="reserva.js"></script>
+    <script src="reserva.js"></script>
 </body>
 
 </html>

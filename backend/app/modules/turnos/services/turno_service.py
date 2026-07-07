@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from fastapi import HTTPException
-from app.modules.turnos.repositories.turnos_repository import (
+from backend.app.modules.turnos.repositories.turnos_repository import (
     crear_turno,
     get_servicio,
     get_turno_by_id,
@@ -10,6 +10,7 @@ from app.modules.turnos.repositories.turnos_repository import (
     existe_turno_solapado,
     get_agenda
     )
+from backend.app.modules.turnos.models.models_turno import TurnoCreate
 
 def crear_turno_service(db, data):
     
@@ -66,7 +67,7 @@ def crear_turno_service(db, data):
     servicio = get_servicio(db, servicio_id)
     if not servicio:
         raise HTTPException(status_code=404,detail="Servicio no existe")
-    duracion = servicio["duracion"]
+    duracion = servicio.duracion
 
     # 4. Calcular hora fin
     hora_fin_dt = hora_inicio_dt + timedelta(minutes=duracion)
@@ -79,8 +80,8 @@ def crear_turno_service(db, data):
     dentro_agenda = False
 
     for a in agendas:
-        inicio = (datetime.min + a["hora_inicio"]).time()
-        fin = (datetime.min + a["hora_fin"]).time()
+        inicio = a.hora_inicio
+        fin = a.hora_fin
 
         if inicio <= hora_inicio_dt.time() and hora_fin_dt.time() <= fin:
             dentro_agenda = True
@@ -105,15 +106,15 @@ def crear_turno_service(db, data):
     )
 
     # 8. Crear turno
-    turno_data = {
-    "profesional_id": profesional_id,
-    "servicio_id": servicio_id,
-    "fecha": fecha_str,
-    "hora_inicio": hora_inicio_db,
-    "hora_fin": hora_fin_db,
-    "cliente_nombre": data.cliente_nombre,
-    "cliente_telefono": data.cliente_telefono
-}
+    turno_data = TurnoCreate(
+        profesional_id=profesional_id,
+        servicio_id=servicio_id,
+        fecha=fecha_str,
+        hora_inicio=hora_inicio_db,
+        hora_fin=hora_fin_db,
+        cliente_nombre=data.cliente_nombre,
+        cliente_telefono=data.cliente_telefono
+    )
 
     turno_id = crear_turno(db, turno_data)
     return turno_id

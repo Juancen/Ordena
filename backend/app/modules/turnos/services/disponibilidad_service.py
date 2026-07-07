@@ -1,13 +1,11 @@
 from datetime import datetime
-from app.modules.turnos.models.models_turno import Turno
+from backend.app.modules.turnos.models.models_turno import Turno
 from fastapi import HTTPException
-from app.modules.turnos.services.calculos import (
-    calcular_bloques_libres,
-    generar_slots,
+from backend.app.modules.turnos.services.calculos import (
     filtrar_pasado,
     calcular_slots
 )
-from app.modules.turnos.repositories.turnos_repository import (
+from backend.app.modules.turnos.repositories.turnos_repository import (
     get_servicio,
     get_agenda,
     get_turnos,
@@ -38,7 +36,7 @@ def get_agenda_completa(db_orm,profesional_id, dia_semana, fecha,servicio_id):
     if not servicio:
         raise HTTPException(status_code=404, detail="El servicio no existe")
     
-    duracion = servicio["duracion"]
+    duracion = servicio.duracion
     
     # 5. armar bloques agenda (datetime)
     bloques_agendas = construir_bloques_agenda(agendas,fecha)
@@ -109,11 +107,8 @@ def construir_bloques_agenda(agendas, fecha):
 
     for a in agendas:
         
-        hora_inicio = (datetime.min + a["hora_inicio"]).time()
-        hora_fin = (datetime.min + a["hora_fin"]).time()
-        
-        inicio = datetime.combine(fecha, hora_inicio)
-        fin = datetime.combine(fecha, hora_fin)
+        inicio = datetime.combine(fecha, a.hora_inicio)
+        fin = datetime.combine(fecha, a.hora_fin)
         
         bloques_agenda.append((inicio, fin))
     
