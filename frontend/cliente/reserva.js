@@ -6,6 +6,7 @@ let state = {
     horarioSeleccionado: null,
     duracion: null,
     servicioNombre: null,
+    servicio_id: null,
     profesionalId: null,
     profesional_nombre: null,
     cliente_nombre: "",
@@ -96,12 +97,12 @@ window.onload = () => {
     renderEstadoInicialProfesionales();
     // 🔹 Crear fechas base
     const hoy = new Date();
-    const manana = new Date();
-    manana.setDate(hoy.getDate() + 1);
+    const mañana = new Date();
+    mañana.setDate(hoy.getDate() + 1);
 
     // 🔹 Formato ISO correcto (YYYY-MM-DD)
     const hoyISO = formatISO(hoy);
-    const mananaISO = formatISO(manana);
+    const mananaISO = formatISO(mañana);
     cargarServicios();
 
     // 🔹 Guardar en state
@@ -113,23 +114,21 @@ window.onload = () => {
     // 🔹 Actualizar UI (botones)
     document.getElementById("hoy-fecha").innerText = formatearFecha(state.hoy)
     document.getElementById("manana-fecha").innerText = formatearFecha(state.mañana);
-
-    // 🔹 Marcar "Hoy" como activo por defecto
-
-    // 🔹 Actualizar resumen
     document.getElementById("res-fecha").innerText = "-";
-    //actualizarEstadoBoton()
+
 };
 function renderFormulario() {
     inputNombre.value = state.cliente_nombre;
     inputTelefono.value = state.telefono;
 }
 btnHoy.addEventListener("click", () => {
+    if (state.pasoActual !== PASO_FECHA) return;
     actualizarFecha(state.hoy);
     setActivo(btnHoy);
 });
 
 btnManana.addEventListener("click", () => {
+    if (state.pasoActual !== PASO_FECHA) return;
     actualizarFecha(state.mañana);
     setActivo(btnManana);
 });
@@ -142,7 +141,17 @@ function abrirCalendario() {
 const inputFecha = document.getElementById("fecha-hidden");
 
 inputFecha.addEventListener("change", (e) => {
-    actualizarFecha(e.target.value)
+    if (state.pasoActual !== PASO_FECHA) return;
+    const fechaElegida = e.target.value;
+    actualizarFecha(fechaElegida);
+    const textoBotonFecha = e.target.parentElement.querySelector('.text-fecha');
+    if (fechaElegida) {
+        const fechaLimpia = formatearFecha(fechaElegida);
+        textoBotonFecha.textContent = `📅 ${fechaLimpia}`;
+    } else {
+        // Por si el usuario abre el calendario y lo limpia/cancela
+        textoBotonFecha.textContent = '📅 Elegir otro día';
+    }
 });
 
 function syncBotonesFecha() {
@@ -157,7 +166,7 @@ function syncBotonesFecha() {
     if (state.fecha === state.hoy) {
         btnHoy.classList.add("active");
         cargarHorarios();
-    } else if (state.fecha === state.manana) {
+    } else if (state.fecha === state.mañana) {
         btnManana.classList.add("active");
         cargarHorarios();
     } else {
@@ -175,7 +184,6 @@ function onServicioSeleccionado(servicioId) {
     resetDesde("bloque-servicio");
     renderEstadoInicialHorarios()
     state.servicio_id = servicioId;
-
     bloqueProfesional.style.display = "block";
 
     containerProfesionales.innerHTML = `
@@ -191,13 +199,9 @@ function onServicioSeleccionado(servicioId) {
         .then(data => {
             // 3. Limpiar contenedor
             containerProfesionales.innerHTML = "";
-
             if (data.length === 0) {
-                containerProfesionales.innerHTML = `
-    <p class="empty-state">
-      No hay profesionales disponibles
-    </p>
-  `;
+                containerProfesionales.innerHTML = `<p class="empty-state">No hay profesionales disponibles</p>`;
+                actualizarAlturaWizard("bloque-profesional");
                 return;
             }
 
@@ -209,6 +213,7 @@ function onServicioSeleccionado(servicioId) {
 
                 card.addEventListener("click", (e) => {
                     const id = e.currentTarget.dataset.id;
+
                     state.profesionalId = id;
                     state.profesional_nombre = prof.nombre
                     // 2. limpiar selección anterior
@@ -237,7 +242,7 @@ function onServicioSeleccionado(servicioId) {
                 `;
                 containerProfesionales.appendChild(card);
             });
-
+            actualizarAlturaWizard("bloque-profesional");
         })
         .catch(err => console.error("Error:", err));
 
@@ -250,12 +255,12 @@ function formatISO(date) {
 
 function formatearFecha(fechaISO) {
     const [year, month, day] = fechaISO.split("-");
-
     const fecha = new Date(year, month - 1, day); // 👈 LOCAL
 
     return fecha.toLocaleDateString("es-AR", {
         day: "numeric",
-        month: "short"
+        month: "long",
+        year: "numeric"
     });
 }
 
@@ -265,28 +270,26 @@ function abrirCalendario() {
 }
 
 function seleccionarHora(hora) {
+    console.log("Hora clickeada:", hora);
     state.horarioSeleccionado = hora;
 
     document.getElementById("res-hora").innerText = hora;
 
     renderHorarios();
     renderResumen();
-    renderTurnoSeleccionado();
     actualizarFooter();
-
+    actualizarAlturaWizard("bloque-horarios");
 }
 
 function renderHorarios() {
+
     const contenedor = document.getElementById("horarios");
     contenedor.innerHTML = "";
-
-
     state.horarios.forEach(h => {
         const div = document.createElement("div");
         div.style.padding = "10px";
         div.style.margin = "5px";
         div.style.border = "1px solid #ccc";
-        div.style.display = "inline-block";
         div.style.cursor = "pointer";
         div.innerText = h.inicio;
 
@@ -295,6 +298,7 @@ function renderHorarios() {
             div.classList.add("selected");
 
             div.onclick = () => {
+                console.log(h.inicio)
                 seleccionarHora(h.inicio);
             };
 
@@ -313,6 +317,7 @@ function renderHorarios() {
         }
 
         contenedor.appendChild(div);
+
     });
 }
 
@@ -349,14 +354,12 @@ async function cargarServicios() {
             this.classList.add("active");
 
             // guardar estado (usando dataset o servicio directo)
-            state.servicioId = this.dataset.id;
+            state.servicio_id = this.dataset.id;
             state.servicioNombre = this.dataset.nombre;
             state.duracion = servicio.duracion;
-
-            onServicioSeleccionado(state.servicioId)
+            onServicioSeleccionado(state.servicio_id)
             renderResumen();
-            renderDuracion();
-            //actualizarEstadoBoton();
+            actualizarFooter();
         });
 
         contenedor.appendChild(card);
@@ -373,9 +376,8 @@ function renderEstadoInicialHorarios() {
 
 async function cargarHorarios() {
     const contenedor = document.getElementById("horarios");
-    const servicioId = state.servicioId
+    const servicioId = state.servicio_id
     const profesionalId = state.profesionalId;
-
     if (!profesionalId) {
         renderEstadoInicialHorarios();
         return
@@ -383,13 +385,13 @@ async function cargarHorarios() {
 
 
     if (isNaN(servicioId) || !state.fecha) return;
-
     contenedor.innerHTML = `
     <div class="loading-container">
                         <img src="static/spinner.svg" width="40" />
                         <p>Cargando horarios...</p>
                     </div>
     `;
+    actualizarAlturaWizard("bloque-horarios");
     try {
         // 1. Disponibilidad
         const res = await fetch(
@@ -400,9 +402,9 @@ async function cargarHorarios() {
         if (!res.ok) throw new Error("Error en agenda");
 
         const data = await res.json();
-
         if (data.length === 0) {
             contenedor.innerHTML = "No hay horarios disponibles";
+            actualizarAlturaWizard("bloque-horarios");
             return
         }
         // 2. Turnos ocupados
@@ -417,23 +419,22 @@ async function cargarHorarios() {
         state.horarios = data;
         state.profesionalId = profesionalId;
 
-
         renderHorarios();
-
+        actualizarAlturaWizard("bloque-horarios");
     } catch (error) {
         console.error(error);
 
-        contenedor.innerHTML = `
-            <div style="color:red;">
-                ❌ Error al cargar horarios
-            </div>
-        `;
+        contenedor.innerHTML = `<div style="color:red;">❌ Error al cargar horarios</div>`;
+        actualizarAlturaWizard("bloque-horarios");
     }
 }
 
+const btnContinuar = document.getElementById("btn-continuar");
+const btnVolver = document.getElementById("btn-volver");
+
 async function reservar() {
 
-    const servicio = state.servicioId
+    const servicio = state.servicio_id
     let data = null;
     const contError = document.getElementById("error-reserva");
     contError.classList.add("hidden");
@@ -441,10 +442,10 @@ async function reservar() {
     const error = validarAntesDeReservar();
 
     if (error) {
-
         contError.innerText = error;
         contError.classList.remove("hidden");
-        return; // ⛔ cortar ejecución
+        actualizarAlturaWizard("bloque-datos");
+        return;
     }
     const body = {
         fecha: state.fecha,
@@ -479,28 +480,30 @@ async function reservar() {
 
             state.cliente_nombre = "";
             state.telefono = "";
-
             renderFormulario();
 
-            //actualizarEstadoBoton();
-            irAlPaso(PASO_EXITO);
             window.scrollTo({ top: 0, behavior: "smooth" });
-
-            state.horarioSeleccionado = null;
+            irAlPaso(PASO_EXITO);
+            mostrarPantallaExito();
+            window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
             contError.innerText = "Error al reservar";
             contError.classList.remove("hidden");
             btnContinuar.disabled = false;
             btnContinuar.textContent = textoOriginal;
+            actualizarAlturaWizard("bloque-datos");
         }
 
     } catch (err) {
+        console.error("🚨 Error detectado en el bloque try:", err);
         contError.innerText = "No se pudo reservar el turno";
         contError.classList.remove("hidden");
         btnContinuar.disabled = false;
         btnContinuar.textContent = textoOriginal;
+        actualizarAlturaWizard("bloque-datos");
     }
 }
+
 function renderExito() {
 
     document.getElementById("confirmacion-fecha").innerText = state.fecha;
@@ -517,7 +520,6 @@ function actualizarFecha(fecha) {
     state.fecha = fecha;
     state.horarioSeleccionado = null;
     state.fechaSeleccionadaPorUsuario = true;
-    resetSeleccionHorario()
     renderResumen()
     syncBotonesFecha();
     cargarHorarios();
@@ -531,33 +533,6 @@ function setActivo(btn) {
     });
 
     btn.classList.add("active");
-}
-
-function renderDuracion() {
-    const div = document.getElementById("duracion");
-
-    if (!state.duracion) {
-        div.innerText = "";
-        return;
-    }
-
-
-    div.innerHTML = `<i class="fa-regular fa-clock"></i> Duración estimada: ${state.duracion || "-"} min`;
-}
-
-function renderTurnoSeleccionado() {
-    const div = document.getElementById("turno-seleccionado");
-    const contenedor = document.querySelector(".info-turno");
-
-    if (!state.horarioSeleccionado || !state.fecha) {
-        div.innerText = "";
-        contenedor.classList.remove("show");
-        return;
-    }
-
-    div.innerHTML = `<i class="fa-regular fa-calendar"></i> Turno seleccionado: ${state.fecha} a las ${state.horarioSeleccionado}`;
-
-    contenedor.classList.add("show");
 }
 
 function renderResumen() {
@@ -642,25 +617,8 @@ function validarAntesDeReservar() {
         return "Ingresá tu teléfono";
     }
 
-    return null; // todo OK
+    return null;
 }
-
-/*function actualizarEstadoBoton() {
-
-    const btnReservar = document.getElementById("btnReservar");
-    const nombreInput = state.cliente_nombre.trim();
-    const telefonoInput = state.telefono.trim();
-
-    const completo =
-        state.servicioNombre &&
-        state.profesionalId &&
-        state.fechaSeleccionadaPorUsuario &&
-        state.horarioSeleccionado &&
-        nombreInput &&
-        telefonoInput;
-
-    btnReservar.disabled = !completo;
-}*/
 
 function activarPaso() {
     const bloquesFlujo = document.querySelectorAll(".bloque-flujo")
@@ -674,18 +632,6 @@ function activarPaso() {
 
 }
 
-function resetSeleccionHorario() {
-    state.horarioSeleccionado = null
-    document.getElementById("turno-seleccionado").innerHTML = ""
-    document.getElementById("duracion").innerHTML = ""
-
-    renderDuracion();
-    renderTurnoSeleccionado();
-    cargarHorarios();
-
-    //actualizarEstadoBoton();
-
-}
 function resetBloqueProfesional() {
 
     state.profesionalId = null
@@ -698,8 +644,6 @@ function resetBloqueHorarios() {
     state.horarioSeleccionado = null
     document.querySelector("#horarios .selected")?.classList.remove("selected");
     renderHorarios();
-    renderDuracion();
-    renderTurnoSeleccionado();
     renderResumen()
 }
 
@@ -733,8 +677,6 @@ function resetDesde(bloque) {
 }
 
 const wizardTrack = document.querySelector(".wizard-track");
-const btnContinuar = document.getElementById("btn-continuar");
-const btnVolver = document.getElementById("btn-volver");
 
 btnContinuar.addEventListener("click", siguientePaso);
 
@@ -754,6 +696,11 @@ async function siguientePaso() {
 
     if (!validarPaso()) return;
 
+    if (state.pasoActual === PASO_DATOS) {
+        console.log("Dato en memoria antes de confirmar:", state.horarioSeleccionado);
+        renderResumen();
+    }
+
     switch (state.pasoActual) {
 
         case PASO_CONFIRMACION:
@@ -761,7 +708,7 @@ async function siguientePaso() {
             break;
 
         case PASO_EXITO:
-            resetFlujo();
+            location.reload();
             break;
 
         default:
@@ -783,6 +730,7 @@ function renderWizard() {
     moverSlider();
     actualizarFooter();
     renderExito();
+    renderBarraProgreso();
 
 }
 function moverSlider() {
@@ -791,12 +739,26 @@ function moverSlider() {
 }
 
 function irAlPaso(numeroPaso) {
-
     state.pasoActual = numeroPaso;
     renderWizard();
 
+    // Le damos un respiro de 10ms al navegador para que renderice 
+    // la vista nueva antes de calcular la altura final
+    setTimeout(() => {
+        actualizarAlturaWizard(pasos[numeroPaso]);
+    }, 10);
+
 }
 function actualizarFooter() {
+
+    if (state.pasoActual === PASO_EXITO) {
+        btnVolver.classList.add("hidden");
+        btnContinuar.innerHTML = '<i class="fa-solid fa-house"></i> Volver al inicio';
+
+        btnContinuar.classList.add("btn-success-home");
+        btnContinuar.disabled = false;
+        return;
+    }
     const config = configuracionWizard[state.pasoActual];
 
     btnVolver.classList.toggle("hidden", !config.mostrarVolver);
@@ -812,7 +774,7 @@ function validarPaso() {
             return state.fechaSeleccionadaPorUsuario;
 
         case PASO_SERVICIO:
-            return state.servicioId !== null;
+            return state.servicio_id !== null;
 
         case PASO_PROFESIONAL:
             return state.profesionalId !== null;
@@ -828,5 +790,98 @@ function validarPaso() {
 
         default:
             return true;
+    }
+}
+
+function renderBarraProgreso() {
+
+    const contenedor = document.getElementById("wizard-progress");
+    let html = `
+    <p>Paso ${state.pasoActual + 1} de ${pasos.length}</p>
+
+    <div class="progress-container">
+
+        <div class="progress-background"></div>
+
+        <div class="progress-fill"></div>
+
+        <div class="progress-steps">
+`;
+
+    pasos.forEach((_, index) => {
+
+        let clase = "";
+        let contenido = index + 1;
+        let claseLinea = "";
+        if (index < state.pasoActual) {
+            clase = "completed";
+            contenido = `<i class="fa-solid fa-check"></i>`;
+        } else if (index === state.pasoActual) {
+            clase = "active";
+        }
+
+        html += `
+        <div class="progress-step ${clase}">
+            ${contenido}
+        </div>
+    `;
+
+    });
+
+    html += `
+        </div>
+    </div>
+`;
+
+    contenedor.innerHTML = html;
+    const barra = contenedor.querySelector(".progress-fill");
+
+    const porcentaje =
+        (state.pasoActual / (pasos.length - 1)) * 100;
+
+    barra.style.width = `${porcentaje}%`;
+}
+
+function actualizarAlturaWizard() {
+    const viewport = document.querySelector('.wizard-viewport');
+    const idBloqueActual = pasos[state.pasoActual];
+    const bloqueActivo = document.getElementById(idBloqueActual);
+
+    if (viewport && bloqueActivo) {
+        // Calcula la altura real del contenido del bloque
+        const altura = bloqueActivo.offsetHeight + 20;
+        viewport.style.height = `${altura}px`;
+    }
+}
+
+function mostrarPantallaExito() {
+    // 1. Ocultar progreso (Validando que exista)
+    const progreso = document.getElementById('wizard-progress');
+    if (progreso) {
+        progreso.style.display = 'none';
+    }
+
+    // 2. Ocultar el borde de la tarjeta (Arreglamos el selector)
+    // Usamos querySelector por si 'card' es una clase y no un ID
+    const card = document.querySelector('.card') || document.getElementById('card');
+    if (card) {
+        card.style.border = 'none';
+    }
+
+    // 3. Mostrar encabezado y aviso de éxito
+    const header = document.getElementById('exito-header');
+    if (header) {
+        header.style.display = 'block';
+    }
+
+    const aviso = document.getElementById('exito-aviso');
+    if (aviso) {
+        aviso.style.display = 'flex';
+    }
+
+    // 4. Transformar la tarjeta de detalles
+    const contenedorDetalles = document.getElementById('contenedor-detalles');
+    if (contenedorDetalles) {
+        contenedorDetalles.classList.add('success-details-card');
     }
 }

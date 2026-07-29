@@ -31,11 +31,12 @@
 }
 
 body {
-    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    min-height: 100dvh;
+    flex-direction: column;
     font-family: var(--font);
     background: var(--bg);
-    color: var(--text);
-    margin: 0;
 }
 
 .input-oculto {
@@ -53,29 +54,13 @@ body {
 }
 
 /* header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.header i {
-    font-size: 14px;
-    color: var(--primary);
-    padding-top: 3px;
-}
-
-.header h3 {
-    margin: 0;
-    font-size: 15px;
-    font-weight: 500;
+.linea-azul {
+    width: 40px;
+    height: 4px;
+    background-color: var(--primary);
+    border-radius: 4px;
+    margin: 0 auto;
+    /* Esto lo centra */
 }
 
 .step {
@@ -107,7 +92,6 @@ body {
     flex: 1;
     font-weight: 500;
     white-space: normal;
-    font-family: var(--font);
 }
 
 .fecha-btn.outline {
@@ -162,8 +146,8 @@ body {
 /* duración */
 .duracion {
     font-size: 13px;
-    color: #1e40af;
-    background-color: #dde7f7;
+    color: var(--primary-dark);
+    background-color: var(--success-bg);
     padding: 10px;
     border-radius: 8px;
 }
@@ -171,10 +155,10 @@ body {
 /* turno */
 .turno-seleccionado {
     font-size: 13px;
-    color: #1e40af;
+    color: var(--primary-dark);
     font-weight: 500;
-    background: #DDE7F7;
-    background-color: #dde7f7;
+    background: var(--success-bg);
+    background-color: var(--success-bg);
     padding: 10px;
     border-radius: 8px;
 }
@@ -217,47 +201,28 @@ body {
 
 /* 📦 Layout principal */
 .container {
-    background: #f5f6f8;
-    max-width: 1100px;
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-3);
+    max-width: 800px;
     width: 100%;
     margin: 0 auto;
-    padding: 0px 1rem;
-}
-
-/* 📱 Responsive */
-@media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-        max-width: none;
-    }
-
-    .inputs-row {
-        flex-direction: column;
-    }
-
+    flex: 1;
+    flex-grow: 1;
+    background-color: #ffffff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* 🧱 Cards */
-.card {
-    background: var(--card);
+
+.card.main {
+    width: 100%;
+    /* Que ocupe todo el ancho disponible del nuevo contenedor de 800px */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     border-radius: 12px;
     padding: 16px;
-    border: 1px solid var(--border);
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.main {
-    background: #f5f6f8;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 .header-card {
@@ -267,6 +232,14 @@ body {
     background: var(--card);
     border-radius: 12px;
     border: 1px solid var(--border);
+}
+
+.bloque-confirmacion .resumen {
+    max-width: 500px;
+    /* Un tamaño elegante para el resumen */
+    margin: 0 auto;
+    /* Lo centramos dentro de su bloque */
+    width: 100%;
 }
 
 .resumen {
@@ -279,11 +252,6 @@ body {
 .resumen h3 {
     padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
-    font-family: var(--font);
-}
-
-.resumen strong {
-    font-family: var(--font);
 }
 
 .item-resumen {
@@ -304,30 +272,26 @@ body {
 .item-resumen i {
     padding: 5px 15px 5px 0px;
     font-size: 18px;
-
-    /*font-weight: normal;*/
-
 }
 
 /* 🔤 Textos */
 h2 {
-    font-size: 22px;
-    font-weight: 700;
-    font-family: var(--font);
-    text-align: center;
-    padding-bottom: 20px;
+    font-size: 16px;
+    font-weight: 500;
     position: relative;
+    color: #4b5563;
+    padding-top: 10px;
+    text-align: center;
+    margin: 0 0 15px 0;
 }
 
 .card.main p {
     text-align: center;
     font-size: 14px;
-    font-family: var(--font);
 }
 
 .text-fecha {
     text-align: center;
-    font-family: var(--font);
 }
 
 h3 {
@@ -336,7 +300,6 @@ h3 {
     text-align: justify;
     font-size: 16px;
     font-weight: 500;
-    font-family: var(--font);
 }
 
 p {
@@ -355,12 +318,6 @@ label {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-2);
-}
-
-@media (max-width: 600px) {
-    .bloque-servicio {
-        grid-template-columns: 1fr;
-    }
 }
 
 /* 🧾 Inputs */
@@ -389,7 +346,6 @@ label {
     border-radius: 8px;
     padding: 8px 10px;
     background: #fff;
-    font-family: var(--font);
     font-size: 13px;
 }
 
@@ -451,19 +407,20 @@ button:hover {
 /*Profesionales*/
 
 .profesionales-container {
-    display: flex;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
     margin-top: 20px;
 }
 
 .profesional-card {
+    width: 100%;
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 10px;
     text-align: center;
     cursor: pointer;
     width: 120px;
-    font-family: var(--font);
 }
 
 .profesional-card img {
@@ -474,12 +431,12 @@ button:hover {
 
 .profesional-card.active {
     border: 2px solid blue;
-    background-color: #eef4ff;
+    background-color: var(--success-bg);
 }
 
 .profesional-card.active {
-    border: 2px solid #2563eb;
-    background-color: #eff6ff;
+    border: 2px solid var(--primary);
+    background-color: var(--success-bg);
 }
 
 /* ⏰ Horarios */
@@ -490,7 +447,6 @@ button:hover {
     min-height: 220px;
     justify-content: space-between;
     margin-top: 30px;
-    font-family: var(--font);
 
 }
 
@@ -687,18 +643,12 @@ button:hover {
 }
 
 .loading-container {
-    background-color: white;
-    border: none;
-    width: 100%;
-    min-height: 180px;
-    grid-column: 1 / -1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     gap: 10px;
-    text-align: center;
+    padding: 30px 0;
 }
 
 .servicios-grid {
@@ -707,11 +657,20 @@ button:hover {
     gap: 10px;
 }
 
-@media (max-width: 768px) {
-    .servicios-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.wizard-viewport {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    width: 100%;
+    transition: height 0.35s ease;
 }
+
+.wizard-footer {
+    margin-top: 15px;
+    display: flex;
+    gap: 12px;
+    /* Si también está el botón "Volver", esto los separa entre sí */
+}
+
 
 .servicio-card {
     width: 100%;
@@ -726,13 +685,13 @@ button:hover {
 }
 
 .servicio-card.active {
-    border: 2px solid #2563eb;
-    background: #eff6ff;
+    border: 2px solid var(--primary);
+    background: var(--success-bg);
     position: relative;
 }
 
 .servicio-card:hover {
-    border-color: #2563eb;
+    border-color: var(--primary);
 }
 
 .servicio-card.active::after {
@@ -741,7 +700,7 @@ button:hover {
     top: 5px;
     right: 5px;
 
-    background: #2563eb;
+    background: var(--primary);
     color: white;
     font-size: 12px;
 
@@ -758,7 +717,6 @@ h4 {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 4px;
-    font-family: var(--font);
     line-height: 1.2;
 }
 
@@ -766,16 +724,14 @@ h4 {
     font-size: 12px;
     color: #6b7280;
     margin: 0;
-    font-family: var(--font);
 }
 
 .servicio-card span {
     display: block;
     font-size: 14px;
     font-weight: 600;
-    color: #2563eb;
+    color: var(--primary);
     margin-top: 4px;
-    font-family: var(--font);
 }
 
 #servicios-container {
@@ -824,8 +780,7 @@ button:disabled {
 }
 
 .active-step {
-    border: 3px solid var(--primary);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.15);
     transition: all 0.25s ease;
 }
 
@@ -838,91 +793,87 @@ button:disabled {
 /* --- Contenedor Principal --- */
 .header-shift {
     width: 100%;
-    /* Limita el ancho máximo en PC */
-    margin: 0 auto;
+    height: 250px;
+    position: relative;
+    z-index: 1;
 }
 
 /* --- Imagen de Portada --- */
 .portada-negocio {
     width: 100%;
-    height: 280px;
+    height: 340px;
     /* Altura en PC */
     background-color: #333;
-    /* Color de resguardo por si no carga la imagen */
-    background-image: url('https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=1000&auto=format&fit=crop');
-    /* Imagen de prueba */
     background-size: cover;
     background-position: center;
     border-radius: 0 0 24px 24px;
     /* Bordes redondeados SOLO abajo */
     filter: brightness(0.8);
-    /* Oscurece un poco la imagen para que la tarjeta resalte más */
+    overflow: hidden;
+}
+
+.portada-negocio img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 /* --- Tarjeta de Información --- */
 .tarjeta-info {
     position: relative;
-    /* NECESARIO para que el icono se posicione respecto a esta tarjeta */
-    background: rgba(255, 255, 255, .65);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, .35);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, .12);
+    top: -35px;
     width: 90%;
-    height: 145px;
-    /* Ocupa el 90% en móviles */
+    height: 110px;
     max-width: 450px;
-    /* No crece más de esto en PC */
-
-    /* REGLA CLAVE: El margen negativo la sube sobre la imagen */
-    margin: -80px auto 40px auto;
-
-    padding: 30px 30px 20px 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     /* Sombra elegante */
     text-align: center;
+    background: transparent;
+    border: none;
+    box-shadow: none !important;
+}
+
+
+div.tarjeta-info h1 {
+    color: #111827;
+    /* Gris súper oscuro, muy profesional */
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+
 }
 
 /* --- Icono Superpuesto --- */
 .icono-rubro {
-    position: absolute;
-    top: -25px;
-    /* Exactamente la mitad de su altura (50px / 2) */
+    position: relative;
     left: 50%;
-    /* Lo mueve al centro... */
     transform: translateX(-50%);
-    /* ...y esto corrige el desfase para un centrado perfecto */
-
-    width: 50px;
-    height: 50px;
-    background-color: #FFFFFF;
+    width: 70px;
+    height: 70px;
+    background-color: #ffffff;
+    border: 1px black solid;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 22px;
-    /* Tamaño del icono */
-    color: #1a1a3a;
-    /* Color oscuro */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    color: black;
+    font-size: 28px;
 }
 
 /* --- Tipografía y Detalles de la Tarjeta --- */
 .titulo-negocio {
-    color: #11142D;
+    color: #111827;
     font-size: 22px;
     font-weight: 800;
     margin-bottom: 6px;
     letter-spacing: 0.5px;
-    font-family: var(--font);
-    /* Un poco de espacio entre letras para darle estilo */
 }
 
 .subtitulo-negocio {
     color: #6C757D;
     font-size: 14px;
     margin-bottom: 20px;
-    font-family: var(--font);
 }
 
 .separador {
@@ -937,101 +888,47 @@ button:disabled {
     /* El color de tu marca Shift */
     font-size: 12px;
     font-weight: 600;
-    font-family: var(--font);
 }
 
 .mencion-marca strong {
     font-weight: 800;
-    font-family: var(--font);
-}
-
-/* --- Responsive (Mobile) --- */
-@media (max-width: 600px) {
-    .portada-negocio {
-        height: 220px;
-        /* Hacemos la imagen más corta en celulares */
-        border-radius: 0 0 16px 16px;
-    }
-
-    .tarjeta-info {
-        width: 92%;
-        margin-top: -60px;
-        /* Ajustamos el solapamiento para celular */
-        padding-top: 35px;
-    }
 }
 
 /* --- Contenedor General del Footer --- */
 .footer-shift {
     width: 100%;
-    height: 320px;
-    background: #0F172A;
-    /* Fondo blanco limpio para contrastar con el gris del body */
-    border-top: 1px solid #E9ECEF;
-    /* Una línea divisoria muy sutil arriba */
-    padding: 40px 20px;
-    /* Espaciado interno generoso */
-    margin-top: 20px;
-    /* Separa el footer del contenido de los turnos de arriba */
+    height: auto;
+    background: transparent;
+    padding: 10px 10px;
+    border-top: none;
 }
 
-/* --- Contenedor del Contenido (Alineación) --- */
 .footer-contenido {
     max-width: 1000px;
-    /* Mismo ancho máximo que usamos en el header */
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
-    /* Apila el logo arriba y el texto abajo */
+    flex-direction: row;
+    /* Ponemos el texto y el logo uno al lado del otro */
     align-items: center;
-    /* Centra horizontalmente el logo y el texto */
     justify-content: center;
-    gap: 16px;
-    /* Espacio de separación entre el logo y los derechos */
-    text-align: center;
+    gap: 6px;
+    /* Espacio chiquito entre los elementos */
+    font-size: 13px;
+    color: #9ca3af;
+    /* Gris sutil */
+}
+
+.footer-contenido span {
+    font-weight: 400;
 }
 
 /* --- Estilos del Logo --- */
 .footer-logo {
-    /* Altura ideal para que se vea fino y no ocupe demasiado espacio */
-    width: 260px;
-    /* Mantiene la proporción de la imagen */
-    display: block;
-}
-
-.footer-logo img {
-    width: 100%;
-    height: auto;
-}
-
-/* --- Estilos del Texto de Derechos --- */
-.footer-derechos {
-    color: #6C757D;
-    /* Un gris suave para que quede en segundo plano y sea elegante */
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}
-
-/* --- Adaptación para Pantallas Chicas (Mobile) --- */
-@media (max-width: 600px) {
-    .footer-shift {
-        padding: 30px 15px;
-        /* Reducimos un poco el espaciado en celulares */
-        margin-top: 40px;
-    }
-
-    .footer-derechos {
-        font-size: 13px;
-        /* Achicamos un punto la letra para pantallas pequeñas */
-    }
-}
-
-.slogan-footer {
-    color: rgba(255, 255, 255, .75);
-    font-family: var(--font);
-    border-top: 1px solid rgba(255, 255, 255, .08);
-    padding-top: 20px;
+    height: 100px;
+    width: auto;
+    flex-shrink: 0;
+    opacity: 0.7;
+    object-fit: contain;
 }
 
 .wizard {
@@ -1043,8 +940,269 @@ button:disabled {
 .wizard-track {
     display: flex;
     transition: transform .35s ease;
+    align-items: flex-start;
 }
 
 .bloque-flujo {
     flex: 0 0 100%;
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+    /* 👇 Tu excelente idea aplicada aquí */
+    max-height: 55vh;
+    /* El bloque no superará el 55% del alto de la pantalla */
+    overflow-y: auto;
+    /* Si el contenido es más alto que ese 55%, aparece el scroll vertical */
+    overflow-x: hidden;
+}
+
+.bloque-flujo::-webkit-scrollbar {
+    width: 6px;
+}
+
+.bloque-flujo::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.wizard-progress {
+    margin-bottom: 30px;
+    padding: 0 24px;
+}
+
+.wizard-progress p {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+.progress-step {
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 50%;
+    border: 2px solid #d1d5db;
+
+    background: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    z-index: 2;
+
+    flex-shrink: 0;
+}
+
+.progress-step.active {
+    background: var(--primary);
+    ;
+    border-color: var(--primary);
+    ;
+    color: white;
+}
+
+.progress-step.completed {
+    background: #22c55e;
+    border-color: #22c55e;
+    color: white;
+}
+
+.progress-container {
+    position: relative;
+    margin-top: 16px;
+}
+
+.progress-background {
+    position: absolute;
+
+    top: 50%;
+    left: 16px;
+    right: 16px;
+
+    height: 2px;
+
+    background: #d1d5db;
+
+    transform: translateY(-50%);
+}
+
+.progress-fill {
+    position: absolute;
+
+    top: 50%;
+    left: 16px;
+
+    height: 3px;
+
+    width: 0;
+
+    background: var(--primary);
+
+    transform: translateY(-50%);
+
+    transition: width .5s ease;
+}
+
+.mobile-layout {
+    position: relative;
+    z-index: 1;
+    /* Nos aseguramos de que esté por encima de la foto */
+    background-color: #ffffff;
+    margin-top: -50px;
+
+    /* Le damos espacio arriba para que el texto no choque con el ícono */
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.onda-svg {
+    position: absolute;
+    bottom: 100%;
+    width: 100%;
+    left: 0;
+    height: 93px;
+    display: block;
+    margin-bottom: -12px;
+}
+
+.fecha-btn.outline {
+    background-color: #ffffff;
+    /* Fondo blanco */
+    color: var(--primary);
+    /* Azul (cambialo por el código exacto de tu azul si es distinto) */
+    border: 2px solid var(--primary);
+    ;
+    /* Borde azul para que no se pierda */
+    font-weight: 600;
+    /* Para que el texto resalte un poco más */
+}
+
+/* Opcional: Un leve cambio al tocarlo o pasar el mouse */
+.fecha-btn.outline:active,
+.fecha-btn.outline:hover {
+    background-color: var(--success-bg);
+    /* Un azul muy clarito de fondo */
+}
+
+.confirmacion-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* --------------------------------------
+   2. RESPLANDOR E ÍCONO
+--------------------------------------- */
+/* Contenedor del ícono (reemplaza a success-icon-wrapper) */
+.icono-check {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    width: 120px;
+    height: 120px;
+}
+
+/* El resplandor verde de fondo creado desde tu clase */
+.icono-check::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.25) 0%, rgba(34, 197, 94, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* El check verde con el aro clarito */
+.success-icon {
+    font-size: 70px;
+    color: #22c55e;
+    position: relative;
+    z-index: 1;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 12px rgba(34, 197, 94, 0.15);
+}
+
+/* --------------------------------------
+   3. TEXTOS DEL ENCABEZADO
+--------------------------------------- */
+.confirmacion-header h3 {
+    font-size: 24px;
+    color: #111827;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.confirmacion-header p {
+    color: #6b7280;
+    font-size: 16px;
+    margin: 0;
+}
+
+.btn-success-home {
+    /* Usamos !important para asegurarnos de pisar el color azul por defecto de tu botón Continuar */
+    background-color: #10b981;
+    /* Un verde esmeralda moderno y limpio */
+    color: #ffffff;
+    border: none;
+
+    /* Estructura Soft UI */
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 16px;
+    /* Mantiene la misma curva de las tarjetas de fecha */
+    font-size: 16px;
+    font-weight: 600;
+
+    /* Alineación perfecta para el texto y el ícono de la casita */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /* Espacio entre el ícono y el texto */
+
+    /* Sombra verde muy suave para dar profundidad */
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Efecto al pasar el mouse (Hover) */
+.btn-success-home:hover {
+    background-color: #059669;
+    /* Un verde penitas más oscuro */
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
+    transform: translateY(-2px);
+    /* Se levanta un poquito */
+}
+
+/* Efecto al hacer clic (Active) */
+.btn-success-home:active {
+    transform: translateY(1px);
+    /* Se hunde al tocarlo */
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
 }

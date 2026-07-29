@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="/frontend/negocio/assets/images/logo-blanco .png" alt="Logo-Shift">
+        </div>
+
+        <nav class="menu">
+
+            <a class="menu-item active">Inicio</a>
+            <a class="menu-item">Agenda</a>
+            <a class="menu-item">Turnos</a>
+            <a class="menu-item">Servicios</a>
+            <a class="menu-item">Profesionales</a>
+            <a class="menu-item">Configuracion</a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="business-card"></div>
+            <button class="logout-btn"></button>
+        </div>
+
+    </aside>
+
+    <main class="dashboard">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <h1>¡Hola, Lucas!</h1>
+                <p>Martes, 28 de julio de 2025</p>
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification-btn">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+
+                <img class="user-avatar" src="../assets/images/avatar.png" alt="Usuario">
+
+            </div>
+
+        </header>
+
+        <section class="dashboard-grid">
+
+            <section class="agenda-hoy">
+                <div class="cabecera-card">
+
+                    <div class="titulo-card">
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                        <h2>Agenda de hoy</h2>
+
+                    </div>
+
+                    <button class="btn-secundario">
+                        Ver agenda completa
+                    </button>
+
+                </div>
+
+                <div class="lista-turnos">
+                    <!-- Turno -->
+                    <article class="item-turno">
+                        <div class="hora-turno">
+                            <span>09:30</span>
+                        </div>
+
+                        <div class="info-turno">
+
+                            <h3>Juan Pérez</h3>
+                            <p>Corte de cabello</p>
+                            <span>Lucas Gómez</span>
+
+                        </div>
+
+                        <div class="estado-turno">
+
+                            <span class="badge confirmado">
+                                Confirmado
+                            </span>
+
+                        </div>
+                    </article>
+                    <article class="item-turno">
+                        <div class="hora-turno">
+                            <span>09:30</span>
+                        </div>
+
+                        <div class="info-turno">
+
+                            <h3>Juan Pérez</h3>
+                            <p>Corte de cabello</p>
+                            <span>Lucas Gómez</span>
+
+                        </div>
+
+                        <div class="estado-turno">
+
+                            <span class="badge confirmado">
+                                Pendiente
+                            </span>
+
+                        </div>
+                    </article>
+                    <article class="item-turno">
+                        <div class="hora-turno">
+                            <span>09:30</span>
+                        </div>
+
+                        <div class="info-turno">
+
+                            <h3>Juan Pérez</h3>
+                            <p>Corte de cabello</p>
+                            <span>Lucas Gómez</span>
+
+                        </div>
+
+                        <div class="estado-turno">
+
+                            <span class="badge confirmado">
+                                Confirmado
+                            </span>
+
+                        </div>
+                    </article>
+                    <article class="item-turno">
+                        <div class="hora-turno">
+                            <span>09:30</span>
+                        </div>
+
+                        <div class="info-turno">
+
+                            <h3>Juan Pérez</h3>
+                            <p>Corte de cabello</p>
+                            <span>Lucas Gómez</span>
+
+                        </div>
+
+                        <div class="estado-turno">
+
+                            <span class="badge confirmado">
+                                Confirmado
+                            </span>
+
+                        </div>
+                    </article>
+                    <article class="item-turno">
+                        <div class="hora-turno">
+                            <span>09:30</span>
+                        </div>
+
+                        <div class="info-turno">
+
+                            <h3>Juan Pérez</h3>
+                            <p>Corte de cabello</p>
+                            <span>Lucas Gómez</span>
+
+                        </div>
+
+                        <div class="estado-turno">
+
+                            <span class="badge confirmado">
+                                Confirmado
+                            </span>
+
+                        </div>
+                    </article>
+                </div>
+
+                <div class="pie-card">
+
+                    <button class="btn-link">
+                        Ver todos los turnos del día
+                    </button>
+
+                </div>
+            </section>
+
+            <aside class="proximo-turno">
+                <div class="cabecera-card">
+
+                    <div class="titulo-card">
+                        <i class="fa-solid fa-clock"></i>
+                        <h2>Próximo turno</h2>
+                    </div>
+
+                </div>
+
+                <div class="contenido-proximo">
+
+                    <div class="info-proximo">
+
+                        <h3 class="hora">10:30</h3>
+
+                        <div class="cliente">
+
+                            <img src="../assets/images/avatar.png" alt="">
+
+                            <div>
+
+                                <h4>Juan Pérez</h4>
+
+                                <p>Corte de pelo</p>
+
+                                <span>351 123 4567</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="ilustracion">
+                        <img src="../assets/icons/icono-calendario.png" alt="">
+                    </div>
+
+                </div>
+
+                <div class="acciones-proximo">
+
+                    <button class="btn-detalles">
+                        Ver Detalles
+                    </button>
+
+                    <button class="btn-cancelar">
+                        Cancelar turno
+                    </button>
+
+                </div>
+            </aside>
+
+            <section class="estadisticas">
+                <article class="card-estadistica">
+
+                    <div class="cabecera-estadistica">
+
+                        <h3>Turnos hoy</h3>
+
+                        <i class="fa-regular fa-calendar-check"></i>
+
+                    </div>
+
+                    <div class="contenido-estadistica">
+
+                        <span class="numero-estadistica">18</span>
+
+                        <p>Total programados</p>
+
+                    </div>
+
+                </article>
+
+                <article class="card-estadistica"></article>
+
+                <article class="card-estadistica"></article>
+            </section>
+
+        </section>
+
+    </main>
+
+    <button class="fab"><i class="fa-solid fa-plus"></i></button>
+
+</body>
+
+</html>

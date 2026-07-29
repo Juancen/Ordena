@@ -1,0 +1,127 @@
+@media (max-width:768px) {
+    .portada-negocio {
+        height: 190px;
+    }
+
+    /* 2. Liberamos la altura de la tarjeta y la hacemos más compacta */
+    .tarjeta-info {
+        min-height: 100px;
+        /* ✨ LA CLAVE: Anula los 145px fijos de PC */
+        width: 85%;
+        /* La hacemos un poquito más angosta */
+        max-width: 320px;
+        margin: -115px auto 24px;
+        /* Sube menos sobre la foto (-40px en vez de -80px) */
+        padding: 30px 15px 15px 15px;
+        /* Menos espacio interno a los lados y abajo */
+    }
+
+    /* 3. Ajustamos un poco los textos */
+    .titulo-negocio {
+        font-size: 20px;
+        margin-bottom: 2px;
+    }
+
+    .subtitulo-negocio {
+        font-size: 13px;
+        margin-bottom: 0;
+        /* Quitamos el margen porque ya no hay línea debajo */
+    }
+
+    /* 4. Ocultamos lo que sobra para ganar espacio en pantalla */
+    .separador,
+    .mencion-marca {
+        display: none;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        height: 100dvh;
+        max-width: none;
+
+        overflow: hidden;
+    }
+
+    .card.main {
+        flex: none !important;
+
+        height: max-content !important;
+    }
+
+    #bloque-exito {
+        max-height: none;
+        overflow-y: hidden;
+    }
+
+    .servicios-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        width: 100%;
+        max-height: 45vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-bottom: 10px;
+        padding-right: 6px;
+    }
+
+    .servicios-grid::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .servicios-grid::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+
+    .servicio-card {
+        padding: 12px 8px;
+        width: 100%;
+    }
+
+    .servicio-card h4 {
+        font-size: 14px;
+        /* Achicamos un pelín el título para que entren nombres largos como "Corte + Barba" */
+        margin-bottom: 4px;
+    }
+
+    .wizard {
+        display: flex;
+        flex-direction: column;
+
+        flex: none;
+
+        min-height: 0;
+
+        overflow: hidden;
+    }
+
+    .wizard-progress {
+        flex-shrink: 0;
+    }
+
+    .wizard-viewport {
+        flex: none;
+
+        min-height: 0;
+
+        overflow: hidden;
+    }
+
+    .wizard-footer {
+        flex-shrink: 0;
+    }
+
+    .footer-shift {
+        padding: 7px 0;
+        /* Un poco menos de padding en celu */
+    }
+
+    .footer-contenido {
+        gap: 6px;
+        /* Juntamos un poquito más los elementos en pantallas chicas */
+    }
+}
