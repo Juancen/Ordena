@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="../shared/css/global.css">
     <link rel="stylesheet" href="dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <meta charset="UTF-8">
@@ -17,14 +18,20 @@
         </div>
 
         <nav class="menu">
-
-            <a class="menu-item active">Inicio</a>
-            <a class="menu-item">Agenda</a>
-            <a class="menu-item">Turnos</a>
-            <a class="menu-item">Servicios</a>
-            <a class="menu-item">Profesionales</a>
-            <a class="menu-item">Configuracion</a>
-
+            <a class="menu-item active">
+                <i class="fa-solid fa-house"></i> Inicio
+            </a>
+            <a class="menu-item">
+                <i class="fa-regular fa-calendar-days"></i> Agenda
+            </a>
+            <a class="menu-item"> <i class="fa-regular fa-clock"></i> Turnos
+            </a>
+            <a class="menu-item"> <i class="fa-solid fa-scissors"></i> Servicios
+            </a>
+            <a class="menu-item"> <i class="fa-regular fa-user"></i> Profesionales
+            </a>
+            <a class="menu-item"> <i class="fa-solid fa-gear"></i> Configuracion
+            </a>
         </nav>
 
         <div class="sidebar-footer">
@@ -192,85 +199,86 @@
                 </div>
             </section>
 
-            <aside class="proximo-turno">
-                <div class="cabecera-card">
+            <div class="columna-secundaria">
 
-                    <div class="titulo-card">
-                        <i class="fa-solid fa-clock"></i>
-                        <h2>Próximo turno</h2>
-                    </div>
+                <aside class="proximo-turno">
+                    <div class="cabecera-card">
 
-                </div>
-
-                <div class="contenido-proximo">
-
-                    <div class="info-proximo">
-
-                        <h3 class="hora">10:30</h3>
-
-                        <div class="cliente">
-
-                            <img src="../assets/images/avatar.png" alt="">
-
-                            <div>
-
-                                <h4>Juan Pérez</h4>
-
-                                <p>Corte de pelo</p>
-
-                                <span>351 123 4567</span>
-
-                            </div>
-
+                        <div class="titulo-card">
+                            <i class="fa-solid fa-clock"></i>
+                            <h2>Próximo turno</h2>
                         </div>
 
                     </div>
 
-                    <div class="ilustracion">
-                        <img src="../assets/icons/icono-calendario.png" alt="">
+                    <div class="contenido-proximo">
+                        <div class="info-proximo">
+                            <h3 class="hora">10:30</h3>
+                            <div class="cliente">
+                                <img src="../assets/images/avatar.png" alt="">
+                                <div>
+                                    <h4>Juan Pérez</h4>
+                                    <p>Corte de pelo</p>
+                                    <span><i class="fa-solid fa-phone"></i> 351 123 4567</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ilustracion">
+                            <img src="../assets/icons/icono-calendario.png" alt="">
+                        </div>
                     </div>
 
-                </div>
-
-                <div class="acciones-proximo">
-
-                    <button class="btn-detalles">
-                        Ver Detalles
-                    </button>
-
-                    <button class="btn-cancelar">
-                        Cancelar turno
-                    </button>
-
-                </div>
-            </aside>
-
-            <section class="estadisticas">
-                <article class="card-estadistica">
-
-                    <div class="cabecera-estadistica">
-
-                        <h3>Turnos hoy</h3>
-
-                        <i class="fa-regular fa-calendar-check"></i>
-
+                    <div class="acciones-proximo">
+                        <button class="btn-detalles">Ver Detalles</button>
+                        <button class="btn-cancelar">Cancelar turno</button>
                     </div>
+                </aside>
 
-                    <div class="contenido-estadistica">
+                <section class="estadisticas">
 
-                        <span class="numero-estadistica">18</span>
-
-                        <p>Total programados</p>
-
+                    <div class="header-estadisticas">
+                        <div class="icono-titulo-azul">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h2>Estadísticas de hoy</h2>
                     </div>
+                    <div class="estadisticas-grid">
+                        <article class="card-estadistica">
+                            <div class="cabecera-estadistica">
+                                <div class="stat-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                                <h3>Turnos hoy</h3>
+                            </div>
 
-                </article>
+                            <div class="contenido-estadistica">
+                                <span class="numero-estadistica">18</span>
+                                <p>Total programados</p>
+                            </div>
+                        </article>
 
-                <article class="card-estadistica"></article>
+                        <article class="card-estadistica">
+                            <div class="cabecera-estadistica">
+                                <h3>Disponibles</h3>
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <div class="contenido-estadistica">
+                                <span class="numero-estadistica">7</span>
+                                <p>Horarios libres</p>
+                            </div>
+                        </article>
 
-                <article class="card-estadistica"></article>
-            </section>
-
+                        <article class="card-estadistica">
+                            <div class="cabecera-estadistica">
+                                <h3>Cancelados</h3>
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </div>
+                            <div class="contenido-estadistica">
+                                <span class="numero-estadistica">2</span>
+                                <p>Hoy</p>
+                            </div>
+                        </article>
+                </section>
+            </div>
         </section>
 
     </main>

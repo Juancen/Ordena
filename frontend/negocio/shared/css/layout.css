@@ -1,0 +1,175 @@
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+}
+
+.logo {
+    width: 100%;
+    height: 100px;
+    padding: 5px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.logo img {
+    height: auto;
+    width: 150px;
+    max-width: 100%;
+    object-fit: contain;
+    transform: scale(2.1);
+    transform-origin: center;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-item i {
+    font-size: 18px;
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item:hover {
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.menu-item.active {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+}
+
+.dashboard {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 48px;
+    overflow-y: auto;
+}
+
+/* --- Topbar --- */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.topbar-left h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-title);
+}
+
+.topbar-left p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.topbar-right {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.topbar-right img,
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--bg-main);
+    cursor: pointer;
+}
+
+.notification-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-main);
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-btn i {
+    font-size: 24px;
+    color: var(--text-title);
+    transition: transform 0.2s ease;
+}
+
+.notification-btn:hover i {
+    transform: scale(1.1);
+}
+
+/* =========================================
+   GRILLA DEL DASHBOARD
+   ========================================= */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+}
+
+.fab {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.fab::before {
+    content: '+';
+    font-size: 32px;
+    font-weight: 300;
+}
+
+.fab:hover {
+    transform: scale(1.05);
+}

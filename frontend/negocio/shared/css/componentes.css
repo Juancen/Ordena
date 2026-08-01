@@ -1,0 +1,124 @@
+.cabecera-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.titulo-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.titulo-card i {
+    color: var(--primary-blue);
+    font-size: 20px;
+}
+
+.titulo-card h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-title);
+}
+
+.btn-secundario {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: var(--primary-blue);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-secundario::after {
+    content: '\f054';
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 12px;
+}
+
+.btn-secundario:hover {
+    background-color: var(--bg-body);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge.confirmado {
+    background-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.badge.pendiente {
+    background-color: var(--border-color);
+    color: var(--text-muted);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--primary-blue);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-detalles,
+.btn-cancelar {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-detalles {
+    background-color: transparent;
+    border: 1px solid var(--primary-blue);
+    color: var(--primary-blue);
+}
+
+.btn-cancelar {
+    background-color: transparent;
+    border: 1px solid #fca5a5;
+    color: var(--danger-text);
+}
+
+.btn-detalles:hover {
+    background-color: var(--primary-blue-hover);
+}
+
+.btn-cancelar:hover {
+    background-color: var(--danger-hover);
+}
+
+.card-estadistica {
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: none;
+    /* Las sub-tarjetas no necesitan la misma sombra que el contenedor padre */
+}
+
+.cabecera-estadistica {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
