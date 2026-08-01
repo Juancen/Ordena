@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Fondos */
+    --bg-body: #f1f5f9;
+    /* Gris neutro elegante para el fondo de pantalla */
+    --bg-main: #ffffff;
+    /* Blanco para tarjetas */
+    --bg-sidebar: #0f172a;
+
+    /* Textos y Bordes */
+    --text-main: #0f172a;
+    --text-title: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --white: #ffffff;
+
+    /* Azul Principal y Variantes */
+    --primary-blue: #2563eb;
+    --primary-blue-light: #ebf2ff;
+    /* Fondo celeste para iconos y próximo turno */
+    --primary-blue-hover: #eff6ff;
+
+    /* Semántica: Éxito (Verde) */
+    --success-text: #16a34a;
+    --success-bg: #f6fbf7;
+    --success-border: #dcfce7;
+
+    /* Semántica: Peligro/Cancelar (Rojo) */
+    --danger-text: #ef4444;
+    --danger-bg: #fff1f2;
+    --danger-border: #ffe4e6;
+    --danger-hover: #fef2f2;
+
+    /* Semántica: Neutro/Disponibles (Violeta) */
+    --purple-text: #9333ea;
+    --purple-bg: #fbf5ff;
+    --purple-border: #f3e8ff;
+
+    /* Semántica: Pendiente */
+    --pending-bg: #f1f5f9;
+    --pending-text: #64748b;
+}
