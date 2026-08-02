@@ -1,19 +1,266 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <link rel="stylesheet" href="../shared/css/variables.css">
-    <link rel="stylesheet" href="../shared/css/reset.css">
-    <link rel="stylesheet" href="../shared/css/layout.css">
-    <link rel="stylesheet" href="../shared/css/componentes.css">
-
+    <link rel="stylesheet" href="../shared/css/global.css">
     <link rel="stylesheet" href="agenda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Agenda | Shift</title>
 </head>
 
 <body>
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar"></aside>
+
+    <!-- Contenido principal -->
+
+    <main class="page-content">
+
+        <!-- Topbar -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <h1>Agenda</h1>
+                <p>Gestioná los turnos de tu negocio.</p>
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification-btn">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+
+                <img src="../assets/img/avatar.png" alt="Usuario" class="user-avatar">
+
+            </div>
+
+        </header>
+
+        <!-- Toolbar -->
+
+        <section class="agenda-toolbar">
+
+            <div class="agenda-navigation">
+
+                <button class="btn-icon">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <div class="agenda-current-date">
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <span>
+                        Martes, 28 de julio de 2025
+                    </span>
+                </div>
+
+                <button class="btn-icon">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+            </div>
+
+            <div class="agenda-view-selector">
+
+                <button class="active">Día</button>
+                <button>Semana</button>
+                <button>Mes</button>
+
+            </div>
+
+            <button class="btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                Nuevo turno
+            </button>
+
+        </section>
+
+        <!-- Layout principal -->
+
+        <section class="content-layout agenda-layout">
+
+            <section class="agenda-board">
+
+                <div class="agenda-grid">
+                    <!-- Cabecera dinámica -->
+
+                    <div class="agenda-grid-header">
+                        <!-- Día -->
+                        <!-- Hora | Lucas | María | Sofía -->
+
+                        <!-- Semana -->
+                        <!-- Hora | Lun | Mar | Mié | ... -->
+
+                        <!-- Mes -->
+                        <!-- No se utiliza -->
+
+                    </div>
+                    <!-- Contenido dinámico -->
+                    <div class="agenda-content">
+                        <!-- renderDay() -->
+
+                        <!-- renderWeek() -->
+
+                        <!-- renderMonth() -->
+
+                    </div>
+
+                </div>
+
+                <footer class="agenda-legend">
+                    <div class="legend-item">
+                        <span class="legend-color confirmed"></span>
+                        <span>Confirmado</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-color cancelled"></span>
+                        <span>Cancelado</span>
+                    </div>
+
+                    <div class="legend-item">
+                        <span class="legend-color available"></span>
+                        <span>Libre</span>
+                    </div>
+
+                </footer>
+
+            </section>
+
+            <aside class="agenda-sidebar">
+
+                <section class="card calendar-card">
+
+                    <div class="cabecera-card">
+
+                        <div class="titulo-card">
+                            <i class="fa-regular fa-calendar"></i>
+                            <h2>Calendario</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="calendar-content">
+
+                        <!-- Navegación del mes -->
+                        <div class="calendar-navigation">
+
+                            <button class="btn-icon">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+
+                            <span>Julio 2025</span>
+
+                            <button class="btn-icon">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+
+                        </div>
+
+                        <!-- Días de la semana -->
+                        <div class="calendar-weekdays"></div>
+
+                        <!-- Grilla del calendario -->
+                        <div class="calendar-grid"></div>
+
+                    </div>
+
+
+                </section>
+
+                <section class="card filters-card">
+                    <div class="cabecera-card">
+
+                        <div class="titulo-card">
+                            <i class="fa-solid fa-filter"></i>
+                            <h2>Filtros</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="filters-content">
+
+                        <div class="filter-group">
+
+                            <label for="profesional">Profesional</label>
+
+                            <select id="profesional">
+
+                            </select>
+
+                        </div>
+
+                        <div class="filter-group">
+
+                            <label for="estado">Estado</label>
+
+                            <select id="estado">
+
+                            </select>
+
+                        </div>
+
+                        <div class="filter-group">
+
+                            <label for="servicio">Servicio</label>
+
+                            <select id="servicio">
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="card summary-card">
+
+                    <div class="cabecera-card">
+
+                        <div class="titulo-card">
+                            <i class="fa-solid fa-chart-column"></i>
+                            <h2>Resumen del día</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="summary-content">
+
+                        <div class="stat-item">
+                            <span>Turnos programados</span>
+                            <strong>18</strong>
+                        </div>
+
+                        <div class="stat-item">
+                            <span>Confirmados</span>
+                            <strong>15</strong>
+                        </div>
+
+                        <div class="stat-item">
+                            <span>Cancelados</span>
+                            <strong>3</strong>
+                        </div>
+
+                        <div class="stat-item">
+                            <span>Libres</span>
+                            <strong>8</strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </aside>
+
+        </section>
+
+    </main>
 
 </body>
 
