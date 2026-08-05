@@ -1,39 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Fondos */
-    --bg-body: #f1f5f9;
-    /* Gris neutro elegante para el fondo de pantalla */
-    --bg-main: #ffffff;
-    /* Blanco para tarjetas */
-    --bg-sidebar: #0f172a;
+    /* Fondos Oscuros */
+    --bg-body: #0d1117;
+    /* Fondo general ultra oscuro */
+    --bg-main: #161b22;
+    /* Fondo de las tarjetas */
+    --bg-sidebar: #0d1117;
+    /* Se funde con el fondo principal */
 
     /* Textos y Bordes */
-    --text-main: #0f172a;
-    --text-title: #1e293b;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
+    --text-main: #c9d1d9;
+    /* Gris claro para textos normales */
+    --text-title: #ffffff;
+    /* Blanco puro para títulos y números grandes */
+    --text-muted: #8b949e;
+    /* Gris azulado para subtítulos */
+    --border-color: #30363d;
+    /* Bordes sutiles oscuros */
     --white: #ffffff;
 
     /* Azul Principal y Variantes */
-    --primary-blue: #2563eb;
-    --primary-blue-light: #ebf2ff;
-    /* Fondo celeste para iconos y próximo turno */
-    --primary-blue-hover: #eff6ff;
+    --primary-blue: #3b82f6;
+    /* Azul más vibrante para que resalte en el oscuro */
+    --primary-blue-light: #1f2937;
+    /* Fondo sutil para destacar la tarjeta de Próximo Turno */
+    --primary-blue-hover: #1e3a8a;
 
     /* Semántica: Éxito (Verde) */
-    --success-text: #16a34a;
-    --success-bg: #f6fbf7;
-    --success-border: #dcfce7;
+    --success-text: #4ade80;
+    --success-bg: rgba(74, 222, 128, 0.1);
+    --success-border: rgba(74, 222, 128, 0.2);
 
     /* Semántica: Peligro/Cancelar (Rojo) */
-    --danger-text: #ef4444;
-    --danger-bg: #fff1f2;
-    --danger-border: #ffe4e6;
-    --danger-hover: #fef2f2;
+    --danger-text: #f87171;
+    --danger-bg: rgba(248, 113, 113, 0.1);
+    --danger-border: rgba(248, 113, 113, 0.2);
+    --danger-hover: rgba(248, 113, 113, 0.15);
 
     /* Semántica: Neutro/Disponibles (Violeta) */
-    --purple-text: #9333ea;
-    --purple-bg: #fbf5ff;
-    --purple-border: #f3e8ff;
+    --purple-text: #c084fc;
+    --purple-bg: rgba(192, 132, 252, 0.1);
+    --purple-border: rgba(192, 132, 252, 0.2);
+
+    /* Semántica: Pendiente (Naranja) */
+    --pending-bg: rgba(251, 191, 36, 0.1);
+    --pending-text: #fbbf24;
 }

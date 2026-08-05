@@ -10,57 +10,13 @@
     <title>Document</title>
 </head>
 
-<body>
+<body data-page="dashboard">
 
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="/frontend/negocio/assets/images/logo-blanco .png" alt="Logo-Shift">
-        </div>
-
-        <nav class="menu">
-            <a class="menu-item active">
-                <i class="fa-solid fa-house"></i> Inicio
-            </a>
-            <a class="menu-item">
-                <i class="fa-regular fa-calendar-days"></i> Agenda
-            </a>
-            <a class="menu-item"> <i class="fa-regular fa-clock"></i> Turnos
-            </a>
-            <a class="menu-item"> <i class="fa-solid fa-scissors"></i> Servicios
-            </a>
-            <a class="menu-item"> <i class="fa-regular fa-user"></i> Profesionales
-            </a>
-            <a class="menu-item"> <i class="fa-solid fa-gear"></i> Configuracion
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="business-card"></div>
-            <button class="logout-btn"></button>
-        </div>
-
-    </aside>
+    <aside id="sidebar" class="sidebar"></aside>
 
     <main class="page-content">
 
-        <header class="topbar">
-
-            <div class="topbar-left">
-                <h1>¡Hola, Lucas!</h1>
-                <p>Martes, 28 de julio de 2025</p>
-            </div>
-
-            <div class="topbar-right">
-
-                <button class="notification-btn">
-                    <i class="fa-regular fa-bell"></i>
-                </button>
-
-                <img class="user-avatar" src="../assets/images/avatar.png" alt="Usuario">
-
-            </div>
-
-        </header>
+        <header id="topbar" class="topbar"></header>
 
         <section class="content-layout">
 
@@ -285,6 +241,9 @@
 
     <button class="fab"><i class="fa-solid fa-plus"></i></button>
 
+    <script src="../shared/js/sidebar.js"></script>
+    <script src="../shared/js/topbar.js"></script>
+    <script src="../shared/js/componentes.js"></script>
 </body>
 
 </html>

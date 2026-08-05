@@ -10,11 +10,11 @@
     <title>Agenda | Shift</title>
 </head>
 
-<body>
+<body data-page="agenda">
 
     <!-- Sidebar -->
 
-    <aside class="sidebar"></aside>
+    <aside id="sidebar" class="sidebar"></aside>
 
     <!-- Contenido principal -->
 
@@ -22,25 +22,7 @@
 
         <!-- Topbar -->
 
-        <header class="topbar">
-
-            <div class="topbar-left">
-                <h1>Agenda</h1>
-                <p>Gestioná los turnos de tu negocio.</p>
-            </div>
-
-            <div class="topbar-right">
-
-                <button class="notification-btn">
-                    <i class="fa-regular fa-bell"></i>
-                </button>
-
-                <img src="../assets/img/avatar.png" alt="Usuario" class="user-avatar">
-
-            </div>
-
-        </header>
-
+        <header id="topbar" class="topbar"></header>
         <!-- Toolbar -->
 
         <section class="agenda-toolbar">
@@ -232,24 +214,36 @@
 
                     <div class="summary-content">
 
-                        <div class="stat-item">
-                            <span>Turnos programados</span>
-                            <strong>18</strong>
+                        <div class="stat-item programados">
+                            <div class="stat-label">
+                                <i class="fa-regular fa-calendar"></i>
+                                <span>Turnos programados</span>
+                            </div>
+                            <strong>42</strong>
                         </div>
 
-                        <div class="stat-item">
-                            <span>Confirmados</span>
-                            <strong>15</strong>
+                        <div class="stat-item confirmados">
+                            <div class="stat-label">
+                                <i class="fa-regular fa-circle-check"></i>
+                                <span>Turnos confirmados</span>
+                            </div>
+                            <strong>35</strong>
                         </div>
 
-                        <div class="stat-item">
-                            <span>Cancelados</span>
-                            <strong>3</strong>
+                        <div class="stat-item cancelados">
+                            <div class="stat-label">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                                <span>Turnos cancelados</span>
+                            </div>
+                            <strong>5</strong>
                         </div>
 
-                        <div class="stat-item">
-                            <span>Libres</span>
-                            <strong>8</strong>
+                        <div class="stat-item libres">
+                            <div class="stat-label">
+                                <i class="fa-regular fa-circle"></i>
+                                <span>Turnos libres</span>
+                            </div>
+                            <strong>12</strong>
                         </div>
 
                     </div>
@@ -262,6 +256,9 @@
 
     </main>
 
+    <script src="../shared/js/sidebar.js"></script>
+    <script src="../shared/js/topbar.js"></script>
+    <script src="../shared/js/componentes.js"></script>
 </body>
 
 </html>

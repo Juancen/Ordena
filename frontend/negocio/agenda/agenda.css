@@ -1,0 +1,321 @@
+/* =========================================
+   TOOLBAR DE LA AGENDA
+   ========================================= */
+.agenda-toolbar {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+    padding-right: 324px;
+}
+
+.agenda-navigation {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-icon {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-main);
+    transition: background-color 0.2s ease;
+}
+
+.btn-icon:hover {
+    background-color: var(--bg-body);
+}
+
+.agenda-current-date {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    color: var(--text-title);
+    background: var(--bg-main);
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.agenda-current-date i {
+    color: var(--text-muted);
+}
+
+.agenda-view-selector {
+    margin-left: auto;
+    display: flex;
+    background-color: var(--bg-body);
+    padding: 4px;
+    border-radius: 8px;
+    gap: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.agenda-view-selector button {
+    border: none;
+    background: transparent;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.agenda-view-selector button.active {
+    background-color: var(--bg-main);
+    color: var(--primary-blue);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* =========================================
+   LAYOUT ESPECÍFICO DE AGENDA
+   ========================================= */
+/* Sobreescribimos el grid del layout general para darle más espacio a la agenda */
+.content-layout.agenda-layout {
+    grid-template-columns: 1fr 300px;
+    align-items: start;
+}
+
+/* =========================================
+   BOARD PRINCIPAL (GRILLA)
+   ========================================= */
+.agenda-board {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 700px;
+    /* Altura mínima para visualizar bien la grilla */
+    overflow: hidden;
+}
+
+.agenda-grid {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Mockup estructural para la cabecera de días/horas */
+.agenda-grid-header {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-main);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Mockup estructural para el cuerpo de la agenda */
+.agenda-content {
+    display: grid;
+    grid-template-columns: 80px repeat(7, 1fr);
+    flex-grow: 1;
+    /* Líneas horizontales simuladas para las horas */
+    background-size: 100% 60px;
+    background-image: linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+}
+
+/* Leyenda inferior */
+.agenda-legend {
+    display: flex;
+    gap: 24px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-main);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-color.confirmed {
+    background-color: var(--success-text);
+}
+
+.legend-color.cancelled {
+    background-color: var(--danger-text);
+}
+
+.legend-color.available {
+    background-color: var(--text-muted);
+    opacity: 0.3;
+}
+
+/* =========================================
+   SIDEBAR DERECHO (WIDGETS)
+   ========================================= */
+.agenda-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Filtros */
+.filters-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    /* Ideal agregar un ícono personalizado de flecha luego */
+}
+
+/* Resumen / Estadísticas */
+.summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Contenedor para alinear ícono y texto */
+.stat-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-label i {
+    font-size: 16px;
+}
+
+.stat-item span {
+    color: var(--text-title);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stat-item strong {
+    font-size: 20px;
+}
+
+/* Colores semánticos para íconos y números */
+.stat-item.programados i,
+.stat-item.programados strong {
+    color: var(--primary-blue);
+}
+
+.stat-item.confirmados i,
+.stat-item.confirmados strong {
+    color: var(--success-text);
+}
+
+.stat-item.cancelados i,
+.stat-item.cancelados strong {
+    color: var(--danger-text);
+}
+
+.stat-item.libres i,
+.stat-item.libres strong {
+    color: var(--text-muted);
+}
+
+.stat-item span {
+    color: var(--text-title);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.stat-item strong {
+    font-size: 20px;
+    color: var(--primary-blue);
+}
+
+/* Colores específicos para los números del resumen */
+.stat-item:nth-child(2) strong {
+    color: var(--success-text);
+}
+
+.stat-item:nth-child(3) strong {
+    color: var(--danger-text);
+}
+
+.stat-item:nth-child(4) strong {
+    color: var(--text-muted);
+}
+
+/* Calendario Mini (Estructura base) */
+.calendar-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
