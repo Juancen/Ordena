@@ -77,24 +77,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.btn-primary {
-    background-color: var(--primary-blue);
-    color: var(--white);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.btn-primary:hover {
-    opacity: 0.9;
-}
-
 /* =========================================
    LAYOUT ESPECÍFICO DE AGENDA
    ========================================= */
