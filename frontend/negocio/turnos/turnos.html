@@ -4,12 +4,315 @@
 <head>
     <link rel="stylesheet" href="../shared/css/global.css">
     <link rel="stylesheet" href="turnos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Turnos | Shift</title>
 </head>
 
-<body>
+<body data-page="turnos">
+
+    <!-- Sidebar -->
+
+    <aside id="sidebar" class="sidebar"></aside>
+
+    <!-- Contenido principal -->
+
+    <main class="page-content">
+
+        <!-- Topbar -->
+
+        <header id="topbar" class="topbar"></header>
+
+        <!-- Toolbar -->
+
+        <section class="turnos-toolbar">
+
+            <div class="turnos-navigation">
+
+                <div class="turnos-current-range">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span>28 Jul - 03 Ago 2025</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 12px; margin-left: 4px;"></i>
+                </div>
+            </div>
+
+            <div class="turnos-filters">
+
+                <button class="btn-filter active">
+                    Todos
+                </button>
+
+                <button class="btn-filter">
+                    Confirmados <span class="dot confirmados"></span>
+                </button>
+
+                <button class="btn-filter">
+                    Cancelados <span class="dot cancelados"></span>
+                </button>
+
+                <button class="btn-filter">
+                    Completados <span class="dot completados"></span>
+                </button>
+
+                <button class="btn-filter">
+                    <i class="fa-solid fa-filter"></i>Filtros
+                </button>
+
+            </div>
+
+            <div class="turnos-actions">
+                <button class="btn-primary">
+                    <i class="fa-solid fa-plus"></i>
+                    Nuevo turno
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- Layout principal -->
+
+        <section class="content-layout turnos-layout">
+
+            <!-- Tabla -->
+
+            <section class="turnos-board">
+                <!-- Tabla -->
+                <section class="turnos-table">
+                    <!-- Cabecera -->
+                    <div class="table-header">
+
+                        <div class="column">Horario</div>
+
+                        <div class="column">Cliente</div>
+
+                        <div class="column">Servicio</div>
+
+                        <div class="column">Profesional</div>
+
+                        <div class="column">Estado</div>
+
+                        <div class="column">Origen</div>
+
+                        <div class="column">Acciones</div>
+
+                    </div>
+
+                    <!-- Filas -->
+
+                    <div class="table-body">
+
+                        <div class="turno-row">
+
+                            <div class="turno-horario">
+
+                                <strong>10:30</strong>
+
+                                <span>28 Jul</span>
+
+                            </div>
+
+                            <div class="turno-cliente">
+
+                                <div class="cliente-avatar">
+
+                                    J
+
+                                </div>
+
+                                <div class="cliente-info">
+
+                                    <strong>Juan Pérez</strong>
+
+                                    <span>351 123 4567</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="turno-servicio">
+
+                                <strong>Corte de pelo</strong>
+
+                                <span>30 min</span>
+
+                            </div>
+
+                            <div class="turno-profesional">
+
+                                <img src="../assets/images/avatar.png" alt="Lucas">
+
+                                <div>
+
+                                    <strong>Lucas</strong>
+                                    <span>Barbero</span>
+                                </div>
+
+                            </div>
+
+                            <div class="turno-estado">
+                                <span class="badge confirmado">
+                                    Confirmado
+                                </span>
+                            </div>
+
+                            <div class="turno-origen">
+                                Web
+                            </div>
+
+                            <div class="turno-actions">
+
+                                <button class="btn-icon">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+
+                                <button class="btn-icon">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- Footer -->
+
+                <footer class="turnos-pagination">
+
+                    <div class="pagination-info">
+
+                        Mostrando 1 a 10 de 24 turnos
+
+                    </div>
+
+                    <div class="pagination-controls">
+
+                        <!-- botones -->
+
+                    </div>
+
+                    <div class="pagination-limit">
+
+                        <!-- 10 por página -->
+
+                    </div>
+
+                </footer>
+
+            </section>
+
+            <!-- Panel derecho -->
+
+            <aside class="turno-details">
+
+                <header class="details-header">
+                    <h2>Detalles del turno</h2>
+                    <button class="btn-close"><i class="fa-solid fa-xmark"></i></button>
+                </header>
+
+                <div class="details-content">
+
+                    <section class="detail-section turno-status">
+
+                        <span class="badge confirmado">Confirmado</span>
+                        <h3>10:30 hs</h3>
+                        <p>Martes 28 de Julio de 2025</p>
+                    </section>
+
+                    <!-- Cliente -->
+                    <section class="detail-section turno-client">
+                        <span class="section-title">Cliente</span>
+                        <div class="section-body flex-between">
+                            <div class="flex-align">
+                                <div class="cliente-avatar">J</div>
+                                <div class="cliente-info">
+                                    <h4>Juan Pérez</h4>
+                                    <p><i class="fa-solid fa-phone" style="font-size: 10px;"></i> 351 123 4567</p>
+                                </div>
+                            </div>
+                            <button class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i></button>
+                        </div>
+                    </section>
+
+                    <!-- Servicio -->
+
+                    <section class="detail-section turno-service">
+
+                        <span class="section-title">Servicio</span>
+                        <div class="section-body flex-align">
+                            <div class="icon-box"><i class="fa-solid fa-scissors"></i></div>
+                            <div class="info-text">
+                                <h4>Corte de pelo</h4>
+                                <p>30 minutos</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <!-- Profesional -->
+
+                    <section class="detail-section turno-professional">
+
+                        <span class="section-title">Profesional</span>
+                        <div class="section-body flex-align">
+                            <img src="../assets/images/avatar.png" alt="Lucas" class="prof-avatar">
+                            <div class="info-text">
+                                <h4>Lucas</h4>
+                                <p>Barbero</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <!-- Origen -->
+
+                    <section class="detail-section turno-origin">
+                        <span class="section-title">Origen de la reserva</span>
+                        <div class="section-body flex-align">
+                            <div class="icon-box"><i class="fa-solid fa-globe"></i></div>
+                            <div class="info-text">
+                                <h4>Web</h4>
+                                <p>shift.com/turnos</p>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <!-- Notas -->
+
+                    <section class="detail-section turno-notes">
+
+                        <span class="section-title">Notas</span>
+                        <div class="section-body">
+                            <p class="notes-text">Cliente habitual. Prefiere corte clásico.</p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <footer class="turno-actions">
+
+                    <button class="btn-outline-primary">Editar turno</button>
+                    <button class="btn-outline-danger">Cancelar turno</button>
+                    <button class="btn-primary">Completar turno</button>
+
+                </footer>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+    <script src="../shared/js/sidebar.js"></script>
+    <script src="../shared/js/topbar.js"></script>
+    <script src="../shared/js/componentes.js"></script>
 
 </body>
 
