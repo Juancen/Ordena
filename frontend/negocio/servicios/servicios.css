@@ -1,0 +1,465 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL Y CABECERA
+   ========================================= */
+.servicios-content {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    /* Para que la tabla haga scroll interno si hay muchos servicios */
+}
+
+.servicios-listado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.servicios-listado-info h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-title);
+    margin: 0;
+}
+
+.servicios-listado-acciones {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* =========================================
+   BUSCADOR Y BOTONES (Filtros)
+   ========================================= */
+.buscador-servicios {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.buscador-servicios i {
+    position: absolute;
+    left: 12px;
+    color: var(--text-muted);
+}
+
+.buscador-servicios input {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px 10px 36px;
+    color: var(--text-main);
+    font-size: 14px;
+    outline: none;
+    width: 250px;
+    transition: border-color 0.2s;
+}
+
+.buscador-servicios input:focus {
+    border-color: var(--primary-blue);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* =========================================
+   TABLA DE SERVICIOS
+   ========================================= */
+.tabla-container {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.tabla-servicios {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabla-servicios th {
+    padding: 16px 24px;
+    color: var(--text-title);
+    /* Blanco como en el boceto */
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-main);
+    z-index: 10;
+}
+
+.tabla-servicios td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-title);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tabla-servicios tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Estilos específicos de celdas */
+.servicio-duracion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main);
+    font-weight: 400;
+}
+
+.servicio-duracion i {
+    color: var(--text-muted);
+}
+
+/* Estado (Píldora con puntito) */
+.estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.estado-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.estado-activo {
+    background-color: var(--success-bg, rgba(74, 222, 128, 0.1));
+    color: var(--success-text, #4ade80);
+}
+
+.estado-activo .estado-dot {
+    background-color: var(--success-text, #4ade80);
+}
+
+.estado-inactivo {
+    background-color: var(--danger-bg, rgba(248, 113, 113, 0.1));
+    color: var(--danger-text, #f87171);
+}
+
+.estado-inactivo .estado-dot {
+    background-color: var(--danger-text, #f87171);
+}
+
+/* Acciones en la tabla */
+.acciones-servicio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-editar {
+    background: transparent;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: var(--primary-blue);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-editar:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.btn-menu {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-menu:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+}
+
+/* =========================================
+   PAGINACIÓN (Footer)
+   ========================================= */
+.servicios-listado-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.paginacion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-paginacion {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-paginacion.activo {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: var(--primary-blue);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.btn-paginacion:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#servicios-por-pagina {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+}
+
+#servicios-por-pagina option {
+    background-color: var(--bg-main);
+}
+
+/* =========================================
+   MAGIA DEL PANEL LATERAL (DRAWER)
+   ========================================= */
+
+/* Overlay oscuro para el fondo */
+.panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    /* Evita clics cuando está oculto */
+    transition: opacity 0.3s ease;
+}
+
+/* Al agregar la clase .activo con JS, se muestra */
+.panel-overlay.activo {
+    opacity: 1;
+    pointer-events: all;
+    display: block !important;
+}
+
+/* El panel lateral en sí */
+.panel-servicio {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100vh;
+    background-color: var(--bg-main);
+    border-left: 1px solid var(--border-color);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.4);
+
+    /* Lo movemos fuera de la pantalla hacia la derecha por defecto */
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Cuando le agregues la clase .abierto con JS, se desliza hacia adentro */
+.panel-servicio.abierto {
+    transform: translateX(0);
+}
+
+/* Estructura interna del panel */
+.panel-servicio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-servicio-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-title);
+    margin: 0;
+}
+
+.btn-cerrar-panel {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-cerrar-panel:hover {
+    color: var(--white);
+}
+
+/* =========================================
+   FORMULARIO DEL PANEL
+   ========================================= */
+.form-servicio {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-title);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    color: var(--text-title);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+.form-group input:focus {
+    border-color: var(--primary-blue);
+}
+
+/* Campos personalizados (Duración y Precio) */
+.campo-duracion,
+.campo-precio {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0 12px;
+    transition: border-color 0.2s;
+}
+
+.campo-duracion:focus-within,
+.campo-precio:focus-within {
+    border-color: var(--primary-blue);
+}
+
+.campo-duracion input,
+.campo-precio input {
+    border: none !important;
+    padding: 12px 12px 12px 0 !important;
+    background: transparent;
+    flex-grow: 1;
+}
+
+.campo-duracion span,
+.campo-precio span {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.campo-precio span {
+    margin-right: 8px;
+}
+
+/* Selector de Estado (Activo/Inactivo) */
+.selector-estado {
+    display: flex;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.estado-option {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.estado-option.activo {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+/* Acciones Inferiores (Botones del formulario) */
+.panel-servicio-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 24px;
+}

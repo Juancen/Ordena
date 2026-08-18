@@ -4,13 +4,220 @@
 <head>
     <link rel="stylesheet" href="../shared/css/global.css">
     <link rel="stylesheet" href="servicios.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Document</title>
 </head>
 
 <body>
 
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios | Shift</title>
+
+    <!-- CSS específico -->
+    <link rel="stylesheet" href="servicios.css">
+    <link rel="stylesheet" href="../shared/css/global.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body data-page="servicios">
+
+    <aside id="sidebar" class="sidebar"></aside>
+    <main class="page-content">
+
+        <header id="topbar" class="topbar"></header>
+
+        <section class="servicios-content">
+            <header class="servicios-listado-header">
+
+                <div class="servicios-listado-info">
+                    <h2>Listado de servicios</h2>
+                </div>
+
+                <div class="servicios-listado-acciones">
+
+                    <div class="buscador-servicios">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+
+                        <input type="search" id="buscar-servicio" placeholder="Buscar servicio..." autocomplete="off">
+                    </div>
+
+                    <button type="button" class="btn-secondary" id="btn-filtros">
+                        <i class="fa-solid fa-filter" aria-hidden="true"></i>
+                        <span>Filtros</span>
+                    </button>
+
+                    <button type="button" class="btn-primary" id="btn-nuevo-servicio">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        <span>Nuevo servicio</span>
+                    </button>
+                </div>
+
+            </header>
+            <div class="tabla-container">
+                <table class="tabla-servicios">
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Duración</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-servicios">
+                        <tr data-servicio-id="1">
+                            <td>Corte de pelo</td>
+                            <td>
+                                <span class="servicio-duracion">
+                                    <i class="fa-regular fa-clock" aria-hidden="true"></i>30 min
+                                </span>
+                            </td>
+                            <td>$15.000</td>
+                            <td>
+                                <span class="estado estado-activo">
+                                    <span class="estado-dot" aria-hidden="true"></span>
+                                    Activo
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="acciones-servicio">
+                                    <button type="button" class="btn-editar" data-servicio-id="1">
+                                        <i class="fa-solid fa-pen" aria-hidden="true"></i>
+                                        <span>Editar</span>
+                                    </button>
+
+                                    <button type="button" class="btn-menu" data-servicio-id="1"
+                                        aria-label="Más opciones">
+                                        <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-servicio-id="2">
+                            <td>Barba</td>
+                            <td>
+                                <span class="servicio-duracion">
+                                    <i class="fa-regular fa-clock" aria-hidden="true"></i>20 min</span>
+                            </td>
+
+                            <td>$8.000</td>
+                            <td>
+                                <span class="estado estado-activo">
+                                    <span class="estado-dot" aria-hidden="true"></span>
+                                    Activo
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="acciones-servicio">
+                                    <button type="button" class="btn-editar" data-servicio-id="2">
+                                        <i class="fa-solid fa-pen" aria-hidden="true"></i>
+                                        <span>Editar</span>
+                                    </button>
+                                    <button type="button" class="btn-menu" data-servicio-id="2"
+                                        aria-label="Más opciones">
+                                        <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <footer class="servicios-listado-footer">
+                <span id="contador-servicios">Mostrando 1 a 2 de 2 servicios</span>
+                <div class="paginacion">
+                    <button type="button" class="btn-paginacion" disabled aria-label="Página anterior">
+                        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+
+                    <button type="button" class="btn-paginacion activo" aria-current="page">1</button>
+                    <button type="button" class="btn-paginacion" aria-label="Página siguiente">
+                        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+
+                    <select id="servicios-por-pagina" aria-label="Servicios por página">
+                        <option value="10">10 por página</option>
+                        <option value="20">20 por página</option>
+                        <option value="50">50 por página</option>
+                    </select>
+                </div>
+            </footer>
+        </section>
+
+    </main>
+
+    <aside id="panel-servicio" class="panel-servicio" aria-hidden="true">
+
+        <header class="panel-servicio-header">
+            <h2 id="panel-servicio-titulo">Nuevo servicio</h2>
+            <button type="button" class="btn-cerrar-panel" id="btn-cerrar-panel" aria-label="Cerrar panel">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <form id="form-servicio" class="form-servicio">
+            <div class="form-group">
+                <label for="servicio-nombre">Nombre del servicio</label>
+                <input type="text" id="servicio-nombre" name="nombre" placeholder="Ej: Corte de pelo" required>
+            </div>
+            <div class="form-group">
+                <label for="servicio-duracion">Duración</label>
+                <div class="campo-duracion">
+                    <input type="number" id="servicio-duracion" name="duracion" min="1" placeholder="30" required>
+                    <span>minutos</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="servicio-precio">Precio</label>
+                <div class="campo-precio">
+                    <span>$</span>
+                    <input type="number" id="servicio-precio" name="precio" min="0" step="1" placeholder="15000"
+                        required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <div class="selector-estado">
+                    <button type="button" class="estado-option activo" data-estado="activo">Activo</button>
+                    <button type="button" class="estado-option" data-estado="inactivo"> Inactivo </button>
+                </div>
+                <input type="hidden" id="servicio-estado" name="activo" value="true">
+            </div>
+            <div id="error-servicio" class="form-error" role="alert" hidden></div>
+            <div class="panel-servicio-actions">
+                <button type="button" class="btn-secondary" id="btn-cancelar-servicio">Cancelar</button>
+                <button type="submit" class="btn-primary" id="btn-guardar-servicio">Crear servicio</button>
+            </div>
+        </form>
+    </aside>
+
+    <div id="panel-overlay" class="panel-overlay" hidden></div>
+
+    <script src="../shared/js/componentes.js"></script>
+    <script src="../shared/js/sidebar.js"></script>
+    <script src="../shared/js/topbar.js"></script>
+    <script src="servicios.js"></script>
 </body>
 
 </html>
